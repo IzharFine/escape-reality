@@ -1,0 +1,380 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" />
+    <title>Escape Reality</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/sandstone/bootstrap.min.css" rel="stylesheet" integrity="sha384-G3G7OsJCbOk1USkOY4RfeX1z27YaWrZ1YuaQ5tbuawed9IoreRDpWpTkZLXQfPm3" crossorigin="anonymous">
+    <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="js/jquery.touchSwipe.min.js"></script>
+    <script src="js/Globals.js"></script>
+<style>
+    body {
+        background-color: #536f6e;
+        font-family: Arial;
+    }
+    .header_logo {
+        position: absolute;
+        width: 35px;
+    }
+    .sub {
+        background-color: #b9babb!important;
+        font-weight:100!important;
+    }
+
+    #output .fas:hover {
+    color:white;
+    } 
+    
+    textarea {
+        resize: none;
+    }
+
+    .change_color {
+        background-color: #8aa3bd!important;
+    }
+
+    .row {
+        border-radius: 3px;
+        background-color: #eef7ff;
+        -webkit-transition: background-color 1s;
+        -moz-transition: background-color 1s;
+        transition: background-color 1s;
+        cursor: pointer;
+    }
+
+        .row:not(:first-child):hover {
+            background-color: #9aafae;
+        }
+
+    .row:first-child {
+        font-weight: bold;
+    }
+
+    #SendMsgModalTtl{
+        font-size:20px;
+    }
+
+    .ma-0 {
+        margin: 0 auto;
+    }
+
+    .modal-body .btn{
+        width:49%;
+        display:inline-block;
+    }
+
+    .row_header{
+        color:white;
+    }
+
+    .header_text{
+        font-weight:bold;
+    }
+
+    .reg_text{
+        font-weight:100;
+    }
+
+    .date_text{
+        text-decoration:underline;
+    }
+
+</style>
+</head>
+<body>
+    <!--NAV BAR-->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark"><label id="userName" style="color:white"></label>
+        <a class="navbar-brand" href="home.html">Escape Reality</a>
+        <button class="navbar-toggler" style="right:15px" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="home.html"><i class="fas fa-home"></i> Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="news.html"><i class="fas fa-newspaper"></i> News</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="friends.html"><i class="fas fa-users"></i> Friends</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="messages.html"><i class="fas fa-envelope"></i> Messages <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="myquests.html"><i class="fas fa-th-list"></i> My Quests</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="connect.html"><i class="fab fa-wpforms"></i> Connect Us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="profile.html"><i class="fas fa-user"></i> My Profile</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+            <!--<h3 class="panel-title">My Profile</h3>-->
+        <div class="row mb-1" style="background-color:transparent">
+            <div class="col-7">
+                <input type="text" placeholder="Search" class="form-control p-3 w-100" id="filter_text" />
+            </div>
+            <div class="col-5">
+                <select id="filter_select" style="height:44px;border-radius:5px" class="w-100 form-control">
+                    <option value="0">Friends</option>
+                </select>
+            </div>
+        </div>
+        <div id="output" style="max-height:486px;overflow-y:scroll">
+
+        </div>
+    </div>
+    <div class="modal fade" id="SendMsgModal" tabindex="-1" role="dialog" aria-labelledby="SendMsgModal" aria-hidden="true">
+        <input type="hidden" id="selectedFriend" />
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color:#4d6361;color:white">
+                    <div class="modal-title" id="SendMsgModalTtl"></div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center">
+                    <textarea id="sendMsgTxtArea" class="form-control w-100"></textarea>
+                    <div id="sendBtnCont">
+                        <input type="button" class="btn btn-success mt-5" id="SendMessage" value="Send" />
+                        <input type="button" class="btn btn-danger mt-5" data-dismiss="modal" value="Cancel" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<script>
+    $(document).ready(init);
+
+    function init()
+    {
+        getMyMessages();
+        geyMyFriends();
+        $("#filter_text").on("keyup", filterMessages);
+        $("#filter_select").change(filterMessages)
+        //setInterval(function () { GetMessagesCounter(); }, 1000);
+        GetMessagesCounter();
+    }
+
+    function GetMessagesCounter()
+    {
+        $.ajax({
+            url: WebServiceURL + "/GetMessagesCounter",
+            dataType: "json",
+            type: "POST",
+            data: JSON.stringify({ userid: sessionStorage.UserID }),
+            contentType: "application/json; charset=utf-8",
+            error: function (a, b, c) {
+                //ShowFloatMessage(c, "error");
+                alert(a);
+            },
+            success: function (data) {
+                if (parseInt(data.d) > parseInt(sessionStorage.getItem("msg_counter")))
+                {
+                    sessionStorage.setItem("msg_counter", data.d);
+                    $("#output").children().remove();
+                    getMyMessages();
+                }
+                function getCounter() {
+                    GetMessagesCounter();
+                }
+                setTimeout(getCounter, 1000);
+                
+            }
+        });
+    }
+
+
+    function filterMessages() {
+        var value = $("#filter_text").val();
+        var chosenTxt = $("#filter_select option:selected").val();
+        if (chosenTxt == "0" && value == "") {
+            $("#output .row").removeClass("d-none");
+            $(".collapse.showSearch").collapse("hide");
+            return;
+        }
+        else {
+            $("#output .row").each(function () {
+                if ((chosenTxt != "0" && $(this).attr("data-id") != chosenTxt) || ($(this).find(".searchEnable").eq(0).text().toLowerCase().indexOf($("#filter_text").val().toLowerCase()) == "-1" && $(this).find(".searchEnable").eq(1).text().toLowerCase().indexOf($("#filter_text").val().toLowerCase()) == "-1" && $(this).find(".searchEnable").eq(2).text().toLowerCase().indexOf($("#filter_text").val().toLowerCase()) == "-1")) {
+                    $(this).addClass("d-none");
+                }
+                else
+                    $(this).removeClass("d-none");
+            }
+            );
+        }
+        $(".collapse.showSearch").collapse("show");
+    }
+
+
+    function geyMyFriends() {
+        $.ajax({
+            url: WebServiceURL + "/GetMyFriends",
+            dataType: "json",
+            type: "POST",
+            data: JSON.stringify({ userid: sessionStorage.UserID }),
+            contentType: "application/json; charset=utf-8",
+            error: function (a, b, c) {
+                //ShowFloatMessage(c, "error");
+                alert(a);
+            },
+            success: function (data) {
+                var friend = "";
+                if (data.d != "")
+                {
+                    var x = JSON.parse(data.d);
+                    //var header = $("<div class='row row_header'><div class='col-3'>Name</div><div class='col-4'>Text</div><div class='col-3'>Date</div><div class='col'></div></div>");
+                    //$("#output").append(header);
+                    for (var i = 0; i < x.length; i++) {
+                        friend = $('<option value="' + x[i].UserID2 + '">' + x[i].username + '</option>');
+                        $("#filter_select").append(friend);
+                    }
+                }
+            }
+        });
+    }
+
+
+
+    function makeRandomKey()
+    {
+        return "id" + Math.floor((Math.random() * 10000) + 1);
+    }
+
+    $("#SendMessage").click(sendMsg);
+
+    function sendMsg() {
+        var friend = $("#selectedFriend").val();
+        $.ajax({
+            url: WebServiceURL + "/SendMsg",
+            dataType: "json",
+            type: "POST",
+            data: JSON.stringify({
+                userid: sessionStorage.UserID,
+                friendid: friend,
+                text: $("#sendMsgTxtArea").val()
+            }),
+            contentType: "application/json; charset=utf-8",
+            error: function (a, b, c) {
+                //ShowFloatMessage(c, "error");
+                alert(a);
+            },
+            success: function () {
+                $("#SendMsgModal").modal("hide");
+            }
+        });
+    }
+
+    function putSelectedUser(ele)
+    {
+        
+        $("#SendMsgModalTtl").text("Send message to " + $(ele).closest(".row").children().first().text());
+        var friend = $("#selectedFriend").val($(ele).closest(".row").attr("data-id"));
+    }
+
+    $('.modal').on('hidden.bs.modal', function (e) {
+        $("#sendMsgTxtArea").val("");
+    });
+
+    function getMyMessages()
+    {
+        $.ajax({
+            url: WebServiceURL + "/GetMyMessages",
+            dataType: "json",
+            type: "POST",
+            data: JSON.stringify({ userid: sessionStorage.UserID }),
+            contentType: "application/json; charset=utf-8",
+            error: function (a, b, c) {
+                //ShowFloatMessage(c, "error");
+                alert(a);
+            },
+            success: function (data) {
+                
+                var output = "";
+                if (data.d == "")
+                    output = $("<div style='color:white'>No messages yet.</div>");
+                else {
+                    var subs = "0";
+                    var x = JSON.parse(data.d);
+                    //var header = $("<div class='row row_header'><div class='col-3'>Name</div><div class='col-4'>Text</div><div class='col-3'>Date</div><div class='col'></div></div>");
+                    //$("#output").append(header);
+                    for (var i = 0; i < x.length; i++) {
+                        
+                        var randomKey = makeRandomKey();
+                        output += '<div data-id="' + x[i]["TargetID"] + '" class="row ma-0 mt-2 p-3"">';
+                        output += '<div class="col-10 header_text searchEnable" data-toggle="collapse" href="#' + randomKey + '" aria-expanded="false" aria-controls="' + randomKey + '">' + x[i]["TargetName"] + '</div>';
+                        output += '<div class="col-2"><i class="fas fa-reply" data-toggle="modal" data-target="#SendMsgModal" onclick="putSelectedUser(this)"></i></div>';
+                        output += '<div class="col-6 reg_text searchEnable" data-toggle="collapse" href="#' + randomKey + '" aria-expanded="false" aria-controls="' + randomKey + '">' + x[i]["msgText"] + '</div>';
+                        output += '<div class="col-6 date_text searchEnable" data-toggle="collapse" href="#' + randomKey + '" aria-expanded="false" aria-controls="' + randomKey + '">' + x[i]["date"].substring(0,18) + '</div>';
+                        //output += '<div class="col-2"><i class="fas fa-reply" data-toggle="modal" data-target="#SendMsgModal" onclick="putSelectedUser(this)"></i></div>';
+                        output += '</div>';
+                        if (i + 1 < x.length && x[i]["TargetID"] == x[i+1]["TargetID"])
+                        {
+                            output += '<div class="collapse showSearch" id="' + randomKey + '">';
+                            while (i < x.length - 1 && x[i]["TargetID"] == x[i + 1]["TargetID"]) {
+                                output += '<div data-id="' + x[i]["TargetID"] + '" class="row ma-0 mt-2 p-3 sub ' + (sessionStorage.UserName == x[i]["username_sender"] ? "change_color":"") + '">';
+                                output += '<div class="col-6 header_text searchEnable">' + x[i]["username_sender"] + '</div>';
+                                output += '<div class="col-6 date_text searchEnable">' + x[i]["date"].substring(0, 18) + '</div>';
+                                output += '<div class="col-12 reg_text searchEnable">' + x[i]["msgText"] + '</div>';
+                                output += '</div>';
+                                i++;
+                                if (i + 1 >= x.length && x[i]["TargetID"] != undefined) {
+                                    output += '<div data-id="' + x[i]["TargetID"] + '" class="row ma-0 mt-2 p-3 sub ' + (sessionStorage.UserName == x[i]["username_sender"] ? "change_color" : "") + '">';
+                                    output += '<div class="col-6 header_text searchEnable">' + x[i]["username_sender"] + '</div>';
+                                    output += '<div class="col-6 date_text searchEnable">' + x[i]["date"].substring(0, 18) + '</div>';
+                                    output += '<div class="col-12 reg_text searchEnable">' + x[i]["msgText"] + '</div>';
+                                    output += '</div>';
+                                }
+                            }
+                            output += '</div>';
+                        }
+                    }
+                }
+                $("#output").append(output);
+                filterMessages();
+            }
+        });
+    }
+
+    //function updateRead(pointer)
+    //{
+    //    
+    //    $.ajax({
+    //        url: WebServiceURL + "/UpdateRead",
+    //        dataType: "json",
+    //        type: "POST",
+    //        data: JSON.stringify({
+    //            userid: sessionStorage.UserID,
+    //            friendid: $(pointer).attr("data-id")
+    //        }),
+    //        contentType: "application/json; charset=utf-8",
+    //        error: function (a, b, c) {
+    //            //ShowFloatMessage(c, "error");
+
+    //        },
+    //        success: function () {
+                
+    //        }
+    //    });
+    //}
+</script>

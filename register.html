@@ -1,0 +1,284 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" />
+    <meta http-equiv="Access-Control-Allow-Origin" content="*" />
+
+    <title>Escape Reality</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/sandstone/bootstrap.min.css" rel="stylesheet" integrity="sha384-G3G7OsJCbOk1USkOY4RfeX1z27YaWrZ1YuaQ5tbuawed9IoreRDpWpTkZLXQfPm3" crossorigin="anonymous">
+   <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="js/jquery.touchSwipe.min.js"></script>
+    <script src="js/Globals.js"></script>
+    <script>
+
+        
+        $(document).ready(init);
+
+        function init() {
+            $("#reg_btn").click(userSubmit);
+            
+           
+        }
+
+
+        function userSubmit() {
+            var showFlag = true;
+            $(".mustFill").removeClass("mustFill");
+            $(".form-control").each(function (index, el) {
+                if (el.value == "") {
+                    $(this).addClass("mustFill");
+                    showFlag = false;
+                }
+
+
+            });
+            if (!showFlag) {
+                ShowFloatMessage("All fields are required.", "error");
+                return;
+            }
+            if ($(".form-control[type='password']").eq(0).val().length < 8 || $(".form-control[type='password']").eq(1).val().length < 8)//MOSHE:CHECK LENGTH
+            {
+                ShowFloatMessage("password too short, must have at least 8 chars.", "error");
+                //$(".form-control[type='password']").val("");
+                $(".form-control[type='password']").focus();
+
+                return;
+            }
+
+            var usr = $(".form-control")[0].value;
+
+            if (usr.length < 6) {
+                ShowFloatMessage("username must be at least 6 chars", "error");
+                return;
+            }
+
+
+            var pass1 = $(".form-control[type='password']").eq(0).val();
+            var pass2 = $(".form-control[type='password']").eq(1).val();
+            if (pass1 !== pass2) {
+                ShowFloatMessage("Password NOT matched!", "error");
+                return;
+            }
+            //MOSHE:CHECK EMAIL VALIDATION
+            var checkEmail = $(".form-control[placeholder='Email'] ");
+
+            if (ValidateEmail(checkEmail.val()) != true) {
+                return;
+            }
+
+
+            var user =
+                {
+                    username: $(".form-control")[0].value,
+                    firstname: $(".form-control")[1].value,
+                    lastname: $(".form-control")[2].value,
+                    email: $(".form-control")[3].value,
+                    password: $(".form-control")[4].value
+                }
+            ShowLoader();
+            $.ajax({
+                url: WebServiceURL + "/User_Reg",
+                dataType: "json",
+                type: "POST",
+                data: JSON.stringify(user),
+                contentType: "application/json; charset=utf-8",
+                error: function (a, b, c) {
+                    ShowFloatMessage(c, "error");
+                    DestroyLoader();
+                },
+                success: function (data) {
+                    var result = JSON.parse(data.d);
+                    if (result[0]["Result"] != "OK")//ADDED: CHECK IF USER EXIST IN DB
+                    {
+                        ShowFloatMessage("Error, username or email already exist!", "error");
+
+
+                    }
+                    else {
+                        ShowFloatMessage("Registred Seccessed!", "success");
+                        var changeLocation = function () {
+                            window.location.href = "index.html";
+                        }
+                        window.setTimeout(changeLocation, 2500);
+                    }
+                    DestroyLoader();
+                }
+            });
+        }
+
+        function ValidateEmail(mail) {
+            if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)) {
+                return (true)
+            }
+            ShowFloatMessage("You have entered an invalid email address!", "error");
+            return (false)
+        }
+
+
+        //function userSubmit() {
+        //    var showFlag = true;
+        //    $(".mustFill").removeClass("mustFill");
+        //    $(".form-control").each(function (index, el) {
+        //        if (el.value == "") {
+        //            $(this).addClass("mustFill");
+        //            showFlag = false;
+        //        }
+        //    });
+        //    if (!showFlag) {
+        //        ShowFloatMessage("All fields are required.", "error");
+        //        return;
+        //    }
+        //    var user =
+        //        {
+        //            username: $(".form-control")[0].value,
+        //            firstname: $(".form-control")[1].value,
+        //            lastname: $(".form-control")[2].value,
+        //            email: $(".form-control")[3].value,
+        //            password: $(".form-control")[4].value
+        //        }
+        //    $.ajax({
+        //        url: WebServiceURL + "/User_Reg",
+        //        dataType: "json",
+        //        type: "POST",
+        //        data: JSON.stringify(user),
+        //        contentType: "application/json; charset=utf-8",
+        //        error: function (a, b, c) {
+        //            ShowFloatMessage(c, "error");
+        //        },
+        //        success: function (data) {
+        //            ShowFloatMessage("Registred Seccessed!", "success");
+        //            var changeLocation = function () {
+        //                window.location.href = "index.html";
+        //            }
+        //            window.setTimeout(changeLocation, 2500);
+        //        }
+        //    });
+        //}
+
+
+
+        function ShowFloatMessage(msg, classname) {
+            $(".popup_cont").css("display", "inline");
+            $(".popup_cont").text(msg);
+            $(".popup_cont").addClass(classname);
+            var showMsgTimer = function () {
+                $(".popup_cont").css("display", "none");
+                $(".popup_cont").removeClass(classname);
+            }
+            window.setTimeout(showMsgTimer, 5000);
+        }
+    </script>
+    <script type="text/javascript" src="cordova.js"></script>
+
+<style>
+    body {
+        background-color: #536f6e;
+        font-family: Arial;
+    }
+    input.form-control {
+        margin-top: 8px;
+    }
+
+    .panel-default {
+        width: 85%;
+        margin: 15px auto;
+    }
+
+    .btn {
+        width: 40%;
+        display: inline-block;
+    }
+
+    .row {
+        text-align: center;
+    }
+
+    .btn_cont {
+        width: 100%;
+    }
+    .reg_title {
+        font-size: 33px;
+        text-align: center;
+        font-weight: bold;
+        background-color: rgb(149, 167, 166) !important;
+        border-radius: 8px;
+        color: white;
+    }
+    .hvr-shrink {
+        display: inline-block;
+        vertical-align: middle;
+        -webkit-transform: perspective(1px) translateZ(0);
+        transform: perspective(1px) translateZ(0);
+        box-shadow: 0 0 1px transparent;
+        -webkit-transition-duration: 0.3s;
+        transition-duration: 0.3s;
+        -webkit-transition-property: transform;
+        transition-property: transform;
+    }
+
+        .hvr-shrink:hover, .hvr-shrink:focus, .hvr-shrink:active {
+            -webkit-transform: scale(0.9);
+            transform: scale(0.9);
+        }
+    .mustFill {
+        border: red 1px solid;
+    }
+    .popup_cont {
+        width: 100%;
+        position: fixed;
+        background-color: rgba(206, 155, 67, 0.88);
+        /*box-shadow: black 0px 0px 5px;*/
+        /*border-radius: 6px;*/
+        padding: 5px 0px 8px 4px;
+    }
+    .error {
+        color: white;
+        font-weight: bold;
+        background-color: rgba(206, 67, 67, 0.88);
+    }
+    .popup_cont {
+        display: none;
+    }
+
+    .success {
+        background-color: #00bc8c !important;
+        color: white;
+    }
+
+    #loading_cont {
+        background-image: url(media/img/loading.gif);
+    }
+</style>
+
+</head>
+<body>
+    
+    <div class="popup_cont"></div>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="reg_title">SIGN UP</div>
+            <input type="text" class="form-control" placeholder="User Name" />
+            <input type="text" class="form-control" placeholder="First Name" />
+            <input type="text" class="form-control" placeholder="Last Name" />
+            <input type="text" class="form-control" placeholder="Email" />
+            <input type="password" class="form-control" placeholder="Password" />
+            <input type="password" class="form-control" placeholder="Confirm Password" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="btn_cont">
+            <a href="#" id="reg_btn" class="btn btn-success hvr-shrink">REGISTER</a>
+            <a href="index.html" class="btn btn-default hvr-shrink">CANCEL</a>
+        </div>
+    </div>
+</body>
+</html>
+

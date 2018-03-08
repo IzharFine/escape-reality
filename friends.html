@@ -1,0 +1,587 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" />
+    <title>Escape Reality</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/sandstone/bootstrap.min.css" rel="stylesheet" integrity="sha384-G3G7OsJCbOk1USkOY4RfeX1z27YaWrZ1YuaQ5tbuawed9IoreRDpWpTkZLXQfPm3" crossorigin="anonymous">
+    <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <script src="js/jquery.touchSwipe.min.js"></script>
+    <script src="js/Globals.js"></script>
+    <style>
+        body {
+            background-color: #536f6e;
+            font-family: Arial;
+        }
+
+        .row_header{
+            font-weight:bold;
+        }
+        
+        .header_logo {
+            position: absolute;
+            width: 35px;
+        }
+
+        #FriendsModalTtl{
+            font-size:20px;
+        }
+
+
+        /*.panel-body input {
+            margin-top: 12px;
+        }*/
+        .panel-title {
+            display: inline-block;
+        }
+
+        /*.edit_btn {
+            display: inline;
+            padding: 4px;
+            float: right;
+            margin-top: -3px;
+        }*/
+
+        .disabled_field {
+            background-color: transparent !important;
+            /*color:white;*/
+            cursor: none;
+            border: none;
+        }
+
+        .panel-heading {
+            background-color: #7b8a89 !important;
+            border-color: #7b8a89 !important;
+        }
+
+        .panel {
+            width: 85%;
+            margin: 0 auto;
+        }
+
+        #sendMsgTxtArea{
+            resize:none;
+        } 
+
+        .btn_cont {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .row {
+            border-radius: 3px;
+            background-color: white;
+            cursor: pointer;
+        }
+
+         .row:not(.row_header) {
+            border-radius: 3px;
+            background-color: #eef7ff;
+            -webkit-transition: background-color 1s;
+            -moz-transition: background-color 1s;
+            transition: background-color 1s;
+            cursor: pointer;
+        }
+
+
+             .row:not(.row_header):hover {
+                background-color: #9aafae;
+            }
+
+        .panel-heading .btn {
+            width: 49%;
+            display: inline-block;
+            background-color: #343a40;
+            color: white;
+        }
+
+        .modal-body .btn {
+            width: 49%;
+            display: inline-block;
+        }
+
+        .picked-btn {
+            color: black!important;
+            background-color: #c0d6d5!important;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .success {
+            background-color: #00bc8c !important;
+            color: white;
+        }
+
+        .popup_cont {
+            width: 100%;
+            margin-top: 73px;
+            position: fixed;
+            background-color: rgba(99, 76, 0, 0.88);
+            /* box-shadow: black 0px 0px 5px; */
+            /* border-radius: 6px; */
+            padding: 5px 0px 8px 4px;
+            text-align: center;
+            font-weight: bold;
+            display: none;
+        }
+
+
+        .error {
+            color: white;
+            font-weight: bold;
+            background-color: rgba(206, 67, 67, 0.88);
+        }
+
+        .input_label {
+            vertical-align: sub;
+            font-size: smaller;
+            text-decoration: underline;
+            width: 100%;
+            margin-left: 17px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        #firstName {
+            color: rgba(255, 255, 255, 0.75);
+            margin-left: 60px;
+            margin-top: 28px;
+        }
+
+        .panel .fas {
+            color:black;
+            -webkit-transition: background-color 1s;
+            -moz-transition: background-color 1s;
+            transition: background-color 1s;
+        }
+        
+        .panel .fas:hover {
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="popup_cont"></div>
+    <!--NAV BAR-->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark"><label id="userName" style="color:white"></label>
+        <a class="navbar-brand" href="home.html">Escape Reality</a>
+        <button class="navbar-toggler" style="right:15px" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="home.html"><i class="fas fa-home"></i> Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="news.html"><i class="fas fa-newspaper"></i> News</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="friends.html"><i class="fas fa-users"></i> Friends <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="messages.html"><i class="fas fa-envelope"></i> Messages</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="myquests.html"><i class="fas fa-th-list"></i> My Quests</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="connect.html"><i class="fab fa-wpforms"></i> Connect Us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="profile.html"><i class="fas fa-user"></i> My Profile</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="panel">
+
+            <div class="container" id="friendsReqCount"></div>
+
+        <div class="panel-heading text-center">
+            <!--<h3 class="panel-title">My Profile</h3>-->
+            <a href="#" class="btn picked-btn" id="myFriendsBtn">My Friends</a>
+            <a href="#" class="btn" id="addFriendsBtn">Add Friends</a>
+        </div>
+        <div class="panel-body container" style="max-height:409px;overflow-y:scroll;">
+            <div class="row row_header">
+                <div class="col-9">
+                    <input type="text" id="search_friends" placeholder="Search" class="w-100 p-3 d-none" />
+                </div>
+                <div class="col-2">
+                    <input type="button" id="search_btn" class="btn d-none" value="Find"/>
+                </div>
+            </div>
+            <div id="output"></div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="FriendsModal" tabindex="-1" role="dialog" aria-labelledby="FriendsModal" aria-hidden="true">
+        <input type="hidden" id="selectedFriend" />
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title" id="FriendsModalTtl"></div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center">
+                    <div id="OutputModalText"></div>
+                    <textarea id="sendMsgTxtArea" class="form-control w-100"></textarea>
+                    <div id="delteBtnCont">
+                        <input type="button" class="btn btn-success mt-5" id="deleteUser" value="Yes" />
+                        <input type="button" class="btn btn-danger mt-5" data-dismiss="modal" value="No" />
+                    </div>
+                    <div id="sendBtnCont">
+                        <input type="button" class="btn btn-success mt-5" id="SendMessage" value="Send" />
+                        <input type="button" class="btn btn-danger mt-5" data-dismiss="modal" value="Cancel" />
+                    </div>
+                    <div id="delUserBtnCont">
+                        <input type="button" class="btn btn-success mt-5" id="delUserRequestBtn" value="Yes" />
+                        <input type="button" class="btn btn-danger mt-5" data-dismiss="modal" value="No" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
+
+
+<script>
+    var counter = 0;
+    $(document).ready(init);
+
+    function init() {
+        setInterval(function () { GetFriendRequets(); }, 1000);
+        GetMyFriends();
+    }
+
+    $('.modal').on('hidden.bs.modal', function (e) {
+        $("#sendMsgTxtArea").val("");
+    });
+
+    function GetFriendRequets()
+    {
+        $.ajax({
+            url: WebServiceURL + "/GetFriendsRequests",
+            dataType: "json",
+            type: "POST",
+            data: JSON.stringify({ userid: sessionStorage.UserID }),
+            contentType: "application/json; charset=utf-8",
+            error: function (a, b, c) {
+                //ShowFloatMessage(c, "error");
+                alert(a);
+            },
+            success: function (data) {
+                if (data.d == "") {
+                    $("#friendsReqCount").children().remove();
+                    return;
+                }
+                var x = JSON.parse(data.d);
+                if (counter != x.length)
+                {
+                    $("#friendsReqCount").children().remove();
+                    var a = $('<a class="btn" data-toggle="collapse" href="#friendRequests" aria-expanded="false" aria-controls="friendRequests">You have ' + x.length + ' friend requests</a >');
+                    var collapse = $('<div class="collapse" id="friendRequests"></div >');
+                    $("#friendsReqCount").append(a);
+                    var output = "";
+                    for (var i = 0; i < x.length; i++)
+                    {
+                        output += '<div data-id="' + x[i]["senderID"] + '" class="request-friends row mt-2 p-3">';
+                        output += '<div class="col-9">' + x[i]["username"] + '</div>';
+                        output += '<div class="col-3"><i class="fas fa-times" data-toggle="modal" data-target="#FriendsModal" onclick="putSelectedUser(this)"></i><i class="fas fa-check ml-3" onclick=confirmUser(' + x[i]["senderID"] + ')></i></div>';
+                        output += '</div>';
+                    }
+                    $(collapse).append(output);
+                    $("#friendsReqCount").append(collapse);
+                    counter = x.length;
+                }
+                //var output = "";
+                //if (data.d == "")
+                //    output = $("<div>No friends yet.</div>");
+                //else {
+                //    var x = JSON.parse(data.d);
+                //    for (var i = 0; i < x.length; i++) {
+                //        output += '<div data-id="' + x[i]["UserID2"] + '" class="row mt-2 p-3" data-toggle="modal" data-target="#ShowUserProfile">';
+                //        output += '<div class="col-9">' + x[i]["username"] + '</div>';
+                //        output += '<div class="col-3"><i class="fas fa-trash-alt" data-toggle="modal" data-target="#FriendsModal" onclick="putSelectedUser(this)"></i><i class="fas fa-envelope ml-3" data-toggle="modal" data-target="#FriendsModal" onclick=putSelectedUser(this)></i></div>';
+                //        output += '</div>';
+                //    }
+                //}
+                //$("#output").append(output);
+            }
+        });
+    }
+
+    $("#myFriendsBtn").click(myFriendsClicked);
+    $("#addFriendsBtn").click(addFriendsClicked);
+    $("#deleteUser").click(deleteUser);
+    $("#search_btn").click(findFriends);
+    $("#SendMessage").click(sendMsg);
+    $("#delUserRequestBtn").click(removeUserRequest)
+
+    function removeUserRequest(pointer)
+    {
+        $.ajax({
+            url: WebServiceURL + "/ConfirmRemoveRequest",
+            dataType: "json",
+            type: "POST",
+            data: JSON.stringify({
+                requestid: sessionStorage.UserID,
+                userid: $("#selectedFriend").val(),
+                flag: "0"
+            }),
+            contentType: "application/json; charset=utf-8",
+            error: function (a, b, c) {
+                //ShowFloatMessage(c, "error");
+                alert(a);
+            },
+            success: function () {
+                $(".request-friends[data-id='" + $("#selectedFriend").val() + "']").remove();
+            }
+        });
+    }
+
+    function sendMsg()
+    {
+        var friend = $("#selectedFriend").val();
+        $.ajax({
+            url: WebServiceURL + "/SendMsg",
+            dataType: "json",
+            type: "POST",
+            data: JSON.stringify({
+                userid: sessionStorage.UserID,
+                friendid: friend,
+                text: $("#sendMsgTxtArea").val()
+            }),
+            contentType: "application/json; charset=utf-8",
+            error: function (a, b, c) {
+                //ShowFloatMessage(c, "error");
+                alert(a);
+            },
+            success: function () {
+                $("#FriendsModal").modal("hide");
+            }
+        });
+    }
+
+
+    function findFriends() {
+        $.ajax({
+            url: WebServiceURL + "/FindFriends",
+            dataType: "json",
+            type: "POST",
+            data: JSON.stringify({ userid: sessionStorage.UserID, text: $("#search_friends").val() }),
+            contentType: "application/json; charset=utf-8",
+            error: function (a, b, c) {
+                //ShowFloatMessage(c, "error");
+                alert(a);
+            },
+            success: function (data) {
+                $("#output").children().remove();
+                var output = "";
+                if (data.d == "")
+                    output = $("<div>Not found.</div>");
+                else {
+                    var header = $("<div class='row row_header mt-3' style='color:white;background-color:#343a40;'><div class='col'>User Name</div><div class='col'>First Name</div><div class='col'>Last Name</div><div class='col'>Add</div></div>");
+                    $("#output").append(header);
+                    var x = JSON.parse(data.d);
+                    for (var i = 0; i < x.length; i++) {
+                        output += '<div class="row mt-2 p-3" data-id="' + x[i]["userid"] + '">';
+                        output += '<div class="col">' + x[i]["username"] + '</div>';
+                        output += '<div class="col">' + x[i]["firstname"] + '</div>';
+                        output += '<div class="col">' + x[i]["lastname"] + '</div>';
+                        output += '<div class="col-3"><i class="fas fa-user-plus ml-3"></i></div>';
+                        output += '</div>';
+                    }
+                }
+                $("#output").append(output);
+                $("#output").find(".fa-user-plus").click(addUser);
+            }
+        });
+    }
+
+    function addUser()
+    {
+        var id = $(this).closest(".row").attr("data-id");
+        $.ajax({
+            url: WebServiceURL + "/AddFriend",
+            dataType: "json",
+            type: "POST",
+            data: JSON.stringify({
+                requestid: id,
+                userid: sessionStorage.UserID
+            }),
+            contentType: "application/json; charset=utf-8",
+            error: function (a, b, c) {
+                //ShowFloatMessage(c, "error");
+                alert(a);
+            },
+            success: function (data) {
+                var res = JSON.parse(data.d);
+                if (res[0].Result == "OK")
+                {
+                    alert("Request sent");
+                }
+                else
+                {
+                    alert("Allready requested");
+                }
+            }
+        });
+    }
+
+    function confirmUser(id)
+    {
+        $("#selectedFriend").val(id);
+        $.ajax({
+            url: WebServiceURL + "/ConfirmRemoveRequest",
+            dataType: "json",
+            type: "POST",
+            data: JSON.stringify({
+                requestid: sessionStorage.UserID,
+                userid: id,
+                flag: "1"
+            }),
+            contentType: "application/json; charset=utf-8",
+            error: function (a, b, c) {
+                //ShowFloatMessage(c, "error");
+                alert(a);
+            },
+            success: function () {
+                var row = $('<div data-id="' + $("#selectedFriend").val() + '" class="row mt-2 p-3"><div class="col-9">' + $(".request-friends[data-id='" + $("#selectedFriend").val() + "']").children().first().text() + '</div><div class="col-3"><i class="fas fa-trash-alt" data-toggle="modal" data-target="#FriendsModal" onclick="putSelectedUser(this)"></i><i class="fas fa-envelope ml-3" data-toggle="modal" data-target="#FriendsModal" onclick="putSelectedUser(this)"></i></div></div>');
+                $("#output").append(row);
+                $(".request-friends[data-id='" + $("#selectedFriend").val() + "']").remove();
+            }
+        });
+    }
+
+    function addFriendsClicked()
+    {
+        if ($("#addFriendsBtn").hasClass("picked-btn"))
+            return;
+        $("#addFriendsBtn").addClass("picked-btn");
+        $("#myFriendsBtn").removeClass("picked-btn");
+        $("#output").children().remove();
+        AddFriends();
+    }
+
+    function AddFriends()
+    {
+        $("#search_friends").removeClass("d-none");
+        $("#search_btn").removeClass("d-none");
+
+    }
+
+    function myFriendsClicked() {
+        if ($("#myFriendsBtn").hasClass("picked-btn"))
+            return;
+        $("#search_friends").addClass("d-none");
+        $("#search_btn").addClass("d-none");
+        $("#addFriendsBtn").removeClass("picked-btn");
+        $("#myFriendsBtn").addClass("picked-btn");
+        $("#output").children().remove();
+        GetMyFriends();
+    }
+
+    function putSelectedUser(ele)
+    {
+        $("#selectedFriend").val($(ele).closest(".row").attr("data-id"));
+        if ($(ele).attr("class") == 'fas fa-trash-alt') {        
+            $("#OutputModalText").text("Are you sure you want to delete " + $(ele).closest(".row").children().first().text() + "?");
+            $("#sendBtnCont").addClass("d-none");
+            $("#delteBtnCont").removeClass("d-none");
+            $("#delUserBtnCont").addClass("d-none");
+            $("#FriendsModalTtl").text("");
+            $("#sendMsgTxtArea").addClass("d-none");
+        }
+        else if ($(ele).attr("class") == "fas fa-times")
+        {
+            $("#OutputModalText").text("Are you sure you want to delete " + $(ele).closest(".row").children().first().text() + " friend request?");
+            $("#sendBtnCont").addClass("d-none");
+            $("#delteBtnCont").addClass("d-none");
+            $("#FriendsModalTtl").text("");
+            $("#delUserBtnCont").removeClass("d-none");
+            $("#sendMsgTxtArea").addClass("d-none");
+        }
+        else
+        {
+            $("#FriendsModalTtl").text("Send message to " + $(ele).closest(".row").children().first().text());
+            $("#OutputModalText").text("");
+            $("#sendBtnCont").removeClass("d-none");
+            $("#delteBtnCont").addClass("d-none");
+            $("#delUserBtnCont").addClass("d-none");
+            $("#sendMsgTxtArea").removeClass("d-none");
+        }
+    }
+
+    function deleteUser() {
+        var friend = $("#selectedFriend").val();
+        $.ajax({
+            url: WebServiceURL + "/DeleteFriend",
+            dataType: "json",
+            type: "POST",
+            data: JSON.stringify({
+                userid: sessionStorage.UserID,
+                friendid: friend
+            }),
+            contentType: "application/json; charset=utf-8",
+            error: function (a, b, c) {
+                //ShowFloatMessage(c, "error");
+                alert(a);
+            },
+            success: function () {
+                $("#FriendsModal").modal("hide");
+                $(".row[data-id='" + $("#selectedFriend").val() + "'").remove();
+            }
+        });
+    }
+
+    function GetMyFriends()
+    {
+        $.ajax({
+            url: WebServiceURL + "/GetMyFriends",
+            dataType: "json",
+            type: "POST",
+            data: JSON.stringify({ userid: sessionStorage.UserID }),
+            contentType: "application/json; charset=utf-8",
+            error: function (a, b, c) {
+                //ShowFloatMessage(c, "error");
+                alert(a);
+            },
+            success: function (data) {
+                var output = "";
+                if (data.d == "")
+                    output = $("<div>No friends yet.</div>");
+                else {
+                    var x = JSON.parse(data.d);
+                    for (var i = 0; i < x.length; i++) {
+                        output += '<div data-id="' + x[i]["UserID2"] + '" class="row mt-2 p-3" data-toggle="modal" data-target="#ShowUserProfile">';
+                        output += '<div class="col-9">' + x[i]["username"] + '</div>';
+                        output += '<div class="col-3"><i class="fas fa-trash-alt" data-toggle="modal" data-target="#FriendsModal" onclick="putSelectedUser(this)"></i><i class="fas fa-envelope ml-3" data-toggle="modal" data-target="#FriendsModal" onclick=putSelectedUser(this)></i></div>';
+                        output += '</div>';
+                    }
+                }
+                $("#output").append(output);
+            }
+        });
+        
+        
+    }
+</script>

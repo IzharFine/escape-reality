@@ -1,0 +1,716 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" />
+    <title>Escape Reality</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/sandstone/bootstrap.min.css" rel="stylesheet" integrity="sha384-G3G7OsJCbOk1USkOY4RfeX1z27YaWrZ1YuaQ5tbuawed9IoreRDpWpTkZLXQfPm3" crossorigin="anonymous">
+    <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="js/jquery.touchSwipe.min.js"></script>
+    <script src="js/Globals.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
+    <style>
+        body {
+            background-color: #c0d6d5;
+            font-family: Arial;
+        }
+
+        .panel-body {
+            background-color: #f1f1f1;
+        }
+
+        textarea{
+            resize:none;
+        }
+
+        input:not([type=checkbox]):not(.page-modal) {
+            background-color: transparent;
+            border: none;
+        }
+
+        input {
+            text-overflow: ellipsis;
+        }
+
+        input:not([type=checkbox]):hover:not(.page-modal) {
+            background-color: white;
+            border: black;
+        }
+
+
+        #editQuetsModal input:not([type=checkbox]):hover:not(.page-modal) {
+            background-color: white;
+            color: #94a5a4;
+        }
+
+        .table .row:not(:first-child):not(.row-footer) {
+            background-color: #94a5a4;
+        }
+        .table .fas:hover {
+            color: white;
+        }
+
+
+        .bot_title {
+            width: 100%;
+            display: inline-block;
+            color: white;
+            /* font-weight: bold; */
+            font-family: Arial;
+        }
+
+        .fas{
+            cursor:pointer;
+        } 
+        
+        .row {
+            width: 95%;
+            margin: 0 auto;
+        }
+
+        .top_title {
+            text-decoration: underline;
+            font-family: Arial;
+            font-weight: bold;
+            color: white;
+            font-size: 17px;
+        }
+
+        .panel-default {
+            width: 85%;
+            margin: 0 auto;
+            margin-top: 20px;
+            box-shadow: rgba(0, 0, 0, 0.62) 0px 0px 18px;
+        }
+
+        .header_logo {
+            position: absolute;
+            width: 35px;
+        }
+
+        .panel-heading {
+            background-color: #343a40 !important;
+        }
+
+        #firstName {
+            color: rgba(255, 255, 255, 0.75);
+            margin-left: 60px;
+            margin-top: 28px;
+        }
+
+        .popup_cont {
+            width: 100%;
+            position: fixed;
+            background-color: rgba(206, 155, 67, 0.88);
+            /*box-shadow: black 0px 0px 5px;*/
+            /*border-radius: 6px;*/
+            margin-top:72px;
+            padding: 5px 0px 8px 4px;
+        }
+
+        .error {
+            color: white;
+            font-weight: bold;
+            background-color: rgba(206, 67, 67, 0.88);
+        }
+
+
+        .success {
+            background-color: #00bc8c !important;
+            color: white;
+        }
+
+        #addNewNewsModalTtl{
+            font-size:20px;
+            text-decoration:underline;
+        }
+
+        #editQuetsModal .row:not(.row-header) {
+            background-color: #94a5a4;
+            color: white;
+        }
+
+        .row_header{
+            background-color:transparent!important;
+        }
+
+
+
+    </style>
+</head>
+<body>
+    <div class="popup_cont d-none"><div class="popup_txt_field"></div><div class="close_btn">X</div></div>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark"><label id="userName" style="color:white"></label>
+        <a class="navbar-brand" href="#">Escape Reality</a>
+        <button class="navbar-toggler" style="right:15px" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item pl-5">
+                    <a class="nav-link" id="btn_users" href="#"><i class="fas fa-users"></i> Users</a>
+                </li>
+                <li class="nav-item pl-5">
+                    <a class="nav-link" id="btn_quests" href="#"><i class="fas fa-th-list"></i> Quests <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item pl-5">
+                    <a class="nav-link" id="btn_news" href="#"><i class="fas fa-newspaper"></i> News</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div id="wrapper" class="container">
+        
+    </div>
+    <div class="modal fade" id="addNewNewsModal" tabindex="-1" role="dialog" aria-labelledby="addNewNewsModal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addNewNewsModalTtl">Add new post</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" class="form-control page-modal" placeholder="Topic" data-field="topic"/>
+                    <textarea placeholder="Text" class="form-control page-modal mt-2" data-field="content"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-success" id="addNewPost">Post</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="addNewQuestModal" tabindex="-1" role="dialog" aria-labelledby="addNewQuestModal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Quest</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" class="form-control page-modal" placeholder="Name" data-field="qmName" />
+                    <input type="text" class="form-control page-modal" placeholder="Location" data-field="qmLocation" />
+                    <textarea class="form-control page-modal" placeholder="Desc" data-field="qmDesc"></textarea>
+                    <select id="Dif_Select"  data-field="Diff" class="w-100">
+
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-success" id="addNewQuest">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="addNewStageModal" tabindex="-1" role="dialog" aria-labelledby="addNewStageModal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Stage</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" class="form-control page-modal" placeholder="Name" data-field="stName" />
+                    <input type="text" class="form-control page-modal" placeholder="Number" data-field="stNumber" />
+                    <input type="text" class="form-control page-modal" placeholder="Longitude" data-field="stLong" />
+                    <input type="text" class="form-control page-modal" placeholder="Latitude" data-field="stLat" />
+                    <textarea class="form-control page-modal" placeholder="Question" data-field="stQuestion"></textarea>
+                    <textarea class="form-control page-modal" placeholder="Answer" data-field="stAnswer"></textarea>
+                    <textarea class="form-control page-modal" placeholder="Hint" data-field="stHint"></textarea>
+                    <input type="checkbox" data-field="stEnd" /> Final Stage?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-success" id="addNewStage">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</body>
+</html>
+<script>
+    
+    $(document).ready(init);
+
+    function addNewQuest() {
+        $.ajax({
+            url: WebServiceURL + "/AddNewQuest",
+            dataType: "json",
+            type: "POST",
+            data: JSON.stringify({
+                name: $("input[data-field='qmName']").val(),
+                location: $("input[data-field='qmLocation']").val(),
+                desc: $("textarea[data-field='qmDesc']").val(),
+                diff: $("#Dif_Select option:selected").val(),
+            }),
+            contentType: "application/json; charset=utf-8",
+            error: function (a, b, c) {
+                ShowFloatMessage(a, "error");
+            },
+            success: function (data) {
+                
+                $("#addNewQuestModal").modal("hide");
+                ShowFloatMessage("Updated", "success");
+                triggerClick();
+            }
+        });
+    }
+
+    $('.modal').on('hidden.bs.modal', function (e) {
+        $(".modal input").val("");
+        $(".modal textarea").val("");
+        $("select").val("1");
+        $("input[type='checkbox'][data-field='stEnd']").prop("checked", false);
+    })
+
+    function openStageModal(id) {
+        $(".table").remove();
+        //$("#editQuetsModal").addClass("d-none");
+        var table = $('<div class="table" data-table="stages" data-parent="' + id + '"><div class="row row_header"><div class="col text-center" style="font-size:25px;" id="stageHeaderTtl"></div></div><div class="row row_header"><div class="col">Name</div><div class="col">Number</div><div class="col">Long</div><div class="col">Lat</div><div class="col">Question</div><div class="col">Answer</div><div class="col">Hint</div><div class="col">End?</div><div class="col-1">Delete</div></div></div>');
+        $("#wrapper").append(table);
+        $.ajax({
+            url: WebServiceURL + "/GetStagesByQuest",
+            dataType: "json",
+            type: "POST",
+            data: JSON.stringify({ id: id }),
+            contentType: "application/json; charset=utf-8",
+            error: function (a, b, c) {
+                alert(c);
+            },
+            success: function (data) {
+                
+                var output = "";
+                if (data.d != "") {
+                    var x = JSON.parse(data.d);
+                    for (var i = 0; i < x.length; i++) {
+                        output += '<div data-id=' + x[i]["stageid"] + ' class="row mt-2 p-3">';
+                        //output += '<div class="col-1 d-none"><i class="fas fa-plus"></i></div>';
+                        output += '<div class="col"><input type="text" field="sname" value="' + x[i]["stageName"] + '"/></div>';
+                        output += '<div class="col"><input type="text" field="snum"  value="' + x[i]["stageNumber"] + '"/></div>';
+
+                        output += '<div class="col"><input type="text" field="slong" value="' + x[i]["stageLong"] + '"/></div>';
+                        output += '<div class="col"><input type="text" field="slat" value="' + x[i]["stageLat"] + '"/></div>';
+                        output += '<div class="col"><input type="text" field="srid"  value="' + x[i]["riddle"] + '"/></div>';
+                        output += '<div class="col"><input type="text" field="sanswer"  value="' + x[i]["answer"] + '"/></div>';
+                        output += '<div class="col"><input type="text" field="shint"  value="' + x[i]["hint"] + '"/></div>';
+                        output += '<div class="col"><input type="checkbox" field="siend" ' + (x[i]["isEnd"] == "1" ? "checked" : "") + '/></div>';
+                        output += '<div class="col-1"><i class="fas fa-trash-alt"></i></div>';
+                        output += '</div>';
+                    }
+                    $(".table").append(output);
+                    $(".table").find("input").change(updateField);
+                    $(".table").find(".fa-trash-alt").click(deleteStage);
+                    $("#stageHeaderTtl").text("Edit screen for " + x[0]["questname"] + "");
+                }
+                
+                var addNewNewsButton = $('<div class="row row-footer mt-3"><div class="col p-0"><button type="button" class="btn" data-toggle="modal" data-target="#addNewStageModal">New Stage</button ></div></div>');
+                $(".table").append(addNewNewsButton);
+                $("#wrapper").removeClass("container");
+            }
+        });
+    }
+
+    function deleteStage()
+    {
+        delid = $(this).closest(".row").attr("data-id");
+        if (!confirm("Are you sure?"))
+            return;
+        $.ajax({
+            url: WebServiceURL + "/DeleteStage",
+            dataType: "json",
+            type: "POST",
+            data: JSON.stringify({ id: delid }),
+            contentType: "application/json; charset=utf-8",
+            error: function (a, b, c) {
+                ShowFloatMessage(a, "error");
+            },
+            success: function (data) {
+                var res = JSON.parse(data.d)
+                if (res[0].Result == "OK") {
+                    ShowFloatMessage("User Removed.", "success");
+                    $("[data-id='" + delid + "']").remove();
+                }
+            }
+        });
+    }
+
+    function init()
+    {
+        $("#firstName").text(sessionStorage.getItem("UserName"));
+        $("#btn_users").click(loadUsersTB);
+        $("#btn_news").click(loadNewsTB);
+        $("#addNewPost").click(addNewPost);
+        $("#btn_quests").click(loadQuestsTB);
+        $("#addNewQuest").click(addNewQuest);
+        $("#addNewStage").click(addNewStage);
+        getFilters();
+    }
+
+    function addNewStage()
+    {
+        var isEnd = $("input[type='checkbox'][data-field='stEnd']").is(":checked") ? "1" : "";
+        $.ajax({
+            url: WebServiceURL + "/addNewStage",
+            dataType: "json",
+            type: "POST",
+            data: JSON.stringify({
+                name: $("input[data-field='stName']").val(),
+                number: $("input[data-field='stNumber']").val(),
+                longt: $("input[data-field='stLong']").val(),
+                lat: $("input[data-field='stLat']").val(),
+                question: $("textarea[data-field='stQuestion']").val(),
+                answer: $("textarea[data-field='stAnswer']").val(),
+                hint: $("textarea[data-field='stHint']").val(),
+                isend: isEnd,
+                qid: $(".table").attr("data-parent")
+            }),
+            contentType: "application/json; charset=utf-8",
+            error: function (a, b, c) {
+                ShowFloatMessage(a, "error");
+            },
+            success: function (data) {
+                $("#addNewStageModal").modal("hide");
+                ShowFloatMessage("Updated", "success");
+                openStageModal($(".table").attr("data-parent"));
+            }
+        });
+    }
+
+
+    function triggerClick() {
+        $("#btn_quests").trigger("click");
+    }
+
+    function deleteUser()
+    {
+        delid = $(this).closest(".row").attr("data-id");
+        if (!confirm("Are you sure?"))
+            return;
+            $.ajax({
+                url: WebServiceURL + "/DeleteUser",
+                dataType: "json",
+                type: "POST",
+                data: JSON.stringify({ id: delid }),
+                contentType: "application/json; charset=utf-8",
+                error: function (a, b, c) {
+                    ShowFloatMessage(a, "error");
+                },
+                success: function (data) {
+                    var res = JSON.parse(data.d)
+                    if (res[0].Result == "OK") {
+                        ShowFloatMessage("User Removed.", "success");
+                        $("[data-id='" + delid + "']").remove();
+                    }
+                }
+            });
+    }
+
+    function addNewPost()
+    {
+        $.ajax({
+            url: WebServiceURL + "/AddNewPost",
+            dataType: "json",
+            type: "POST",
+            data: JSON.stringify({ user: sessionStorage.UserName, topic: $("input[data-field='topic']").val(), content: $("textarea[data-field='content']").val() }),
+            contentType: "application/json; charset=utf-8",
+            error: function (a, b, c) {
+                ShowFloatMessage(a, "error");
+            },
+            success: function (data) {
+                $("#addNewNewsModal").modal("hide");
+                ShowFloatMessage("Updated", "success");
+                $("#btn_news").trigger("click");
+            }
+        });
+    }
+
+    $(".nav-link").click(toggleActive);
+
+    function toggleActive() {
+        $(".nav-link").removeClass("active");
+        $(this).addClass("active");
+    }
+
+    function updateField() {
+        var value;
+        if ($(this).attr("type") == "checkbox")
+            value = $(this).prop("checked") ? "1" : "0";
+        else
+            value = $(this).val();
+        var field = $(this).attr("field");
+        var id = $(this).closest(".row").attr("data-id");
+        var table = $(this).closest(".table").attr("data-table");
+        $.ajax({
+            url: WebServiceURL + "/UpdateBO",
+            dataType: "json",
+            type: "POST",
+            data: JSON.stringify({ value: value, field: field, id: id, table: table }),
+            contentType: "application/json; charset=utf-8",
+            error: function (a, b, c) {
+                ShowFloatMessage(a, "error");
+            },
+            success: function (data) {
+
+                ShowFloatMessage("Updated","success");
+            }
+        });
+    }
+
+    function loadNewsTB()
+    {
+        $(".table").remove();
+        $("#editQuetsModal").addClass("d-none");
+        var table = $('<div class="table" data-table="news"><div class="row row_header"><div class="col">Topic</div><div class="col">Text</div><div class="col-2">Delete</div></div></div>');
+        $("#wrapper").append(table);
+        $.ajax({
+            url: WebServiceURL + "/GetNews",
+            dataType: "json",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            error: function (a, b, c) {
+                console.log(c);
+            },
+            success: function (data) {
+                var output = "";
+                if (data.d != "") {
+                    var x = JSON.parse(data.d);
+                    for (var i = 0; i < x.length; i++) {
+                        output += '<div data-id=' + x[i]["id"] + ' class="row mt-2 p-3">';
+                        output += '<div class="col"><input type="text" field="topic" class="form-control" value="' + x[i]["topic"] + '"/></div>';
+                        output += '<div class="col"><input type="text" field="contect" class="form-control" value="' + x[i]["contect"] + '"/></div>';
+                        output += '<div class="col-2"><i class="fas fa-trash-alt"></i></div>';
+                        output += '</div>';
+                    }
+                    $(".table").append(output);
+                }
+                var addNewNewsButton = $('<div class="row row-footer mt-3"><div class="col p-0"><button type="button" class="btn" data-toggle="modal" data-target="#addNewNewsModal">New Post</button ></div></div>');
+                $(".table").append(addNewNewsButton);
+                $(".table").find("input").change(updateField);
+                $("#wrapper").addClass("container");
+                $(".table").find(".fa-trash-alt").click(deleteNews);
+            }
+        });
+    }
+
+    function deleteNews()
+    {
+        delid = $(this).closest(".row").attr("data-id");
+        if (!confirm("Are you sure?"))
+            return;
+        $.ajax({
+            url: WebServiceURL + "/DeleteNews",
+            dataType: "json",
+            type: "POST",
+            data: JSON.stringify({ id: delid }),
+            contentType: "application/json; charset=utf-8",
+            error: function (a, b, c) {
+                ShowFloatMessage(a, "error");
+            },
+            success: function (data) {
+                var res = JSON.parse(data.d)
+                if (res[0].Result == "OK") {
+                    ShowFloatMessage("News Removed.", "success");
+                    $("[data-id='" + delid + "']").remove();
+                }
+            }
+        });
+    }
+
+    function filterBoUsers()
+    {
+        var value = $("#filter_text").val();
+        if (value == "") {
+            $(".table .row:not(:first)").removeClass("d-none");
+        }
+        else {
+            $(".table .row:not(.row_header)").each(function () {
+                if (($(this).find(".searchEnable").eq(0).val().toLowerCase().indexOf($("#filter_text").val().toLowerCase()) == "-1" )) {
+                    $(this).addClass("d-none");
+                }
+                else
+                    $(this).removeClass("d-none");
+            }
+            );
+        }
+    }
+
+    function filterBoQuests() {
+        var value = $("#filter_text").val();
+        if (value == "") {
+            $(".table .row:not(:first)").removeClass("d-none");
+        }
+        else {
+            $(".table .row:not(.row_header)").each(function () {
+                if (($(this).find(".searchEnable").eq(0).val().toLowerCase().indexOf($("#filter_text").val().toLowerCase()) == "-1" && $(this).find(".searchEnable").eq(1).val().toLowerCase().indexOf($("#filter_text").val().toLowerCase()) == "-1")) {
+                    $(this).addClass("d-none");
+                }
+                else
+                    $(this).removeClass("d-none");
+            }
+            );
+        }
+    }
+
+    function loadQuestsTB()
+    {
+        $(".table").remove();
+        $("#editQuetsModal").addClass("d-none");
+        var table = $('<div class="table" data-table="quests"><div class="row row_header"><input typt="text" style="background-color:white" class="form-control mb-5" placeholder="Search" id="filter_text" /></rov><div class="row row_header"><div class="col-1 d-none"></div><div class="col-3">Name</div><div class="col-3">Location</div><div class="col-3">Description</div><div class="col-1">Difficulty</div><div class="col-1">Active</div><div class="col-1">Edit</div></div></div>');
+            $("#wrapper").append(table);
+            $.ajax({
+                url: WebServiceURL + "/GetQuestsBo",
+                dataType: "json",
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                error: function (a, b, c) {
+                    alert(c);
+                },
+                success: function (data) {
+                    var output = "";
+                    var x = JSON.parse(data.d);
+                    for (var i = 0; i < x.length; i++) {
+                        output += '<div data-id=' + x[i]["questid"] + ' class="row mt-2 p-3">';
+                        output += '<div class="col-1 d-none"><i class="fas fa-plus"></i></div>';
+                        output += '<div class="col-3"><input type="text" field="qname" class="form-control searchEnable" value="' + x[i]["questname"] + '"/></div>';
+                        output += '<div class="col-3"><input type="text" field="qlname" class="form-control searchEnable" value="' + x[i]["locationname"] + '"/></div>';
+                        output += '<div class="col-3"><input type="text" field="qdesc" class="form-control searchEnable" value="' + x[i]["questdescription"] + '"/></div>';
+                        output += '<div class="col-1"><input type="text" field="qdif" class="form-control" value="' + x[i]["DIF_Desc"] + '"/></div>';
+                        output += '<div class="col-1"><input type="checkbox" field="qactive" ' + (x[i]["isActive"] == "1" ? "checked" : "") + '/></div>';
+                        output += '<div class="col-1"><i class="fas fa-trash-alt"></i><i class="fas fa-edit ml-3" onclick=openStageModal(' + x[i]["questid"] + ')></i></div>';
+                        output += '</div>';
+                    }
+                    $(".table").append(output);
+                    $(".table").find(".fa-trash-alt").click(deleteQuest);
+                    $(".table").find(".mt-2 input").change(updateField);
+                    var addNewNewsButton = $('<div class="row row-footer mt-3"><div class="col p-0"><button type="button" class="btn" data-toggle="modal" data-target="#addNewQuestModal">New Quest</button ></div></div>');
+                    $(".table").append(addNewNewsButton);
+                    $(".table").find("#filter_text").on("keyup", filterBoQuests);
+                    $("#wrapper").removeClass("container");
+                }
+            });
+            $("#btn_start").addClass("hidden");
+    }
+
+    function deleteQuest()
+    {
+        delid = $(this).closest(".row").attr("data-id");
+        if (!confirm("Are you sure?"))
+            return;
+        $.ajax({
+            url: WebServiceURL + "/DeleteQuest",
+            dataType: "json",
+            type: "POST",
+            data: JSON.stringify({ id: delid }),
+            contentType: "application/json; charset=utf-8",
+            error: function (a, b, c) {
+                ShowFloatMessage(a, "error");
+            },
+            success: function (data) {
+                var res = JSON.parse(data.d)
+                if (res[0].Result == "OK") {
+                    ShowFloatMessage("Quest Removed.", "success");
+                    $("[data-id='" + delid + "']").remove();
+                }
+            }
+        });
+    }
+
+
+
+    function getFilters() {
+        $.ajax({
+            url: WebServiceURL + "/GetFilters",
+            dataType: "json",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            error: function (a, b, c) {
+                //ShowFloatMessage(c, "error");
+                alert(a);
+                alert(b);
+                alert(c);
+                alert("ajax error:" + a);
+            },
+            success: function (data) {
+                var option;
+                var x = JSON.parse(data.d);
+                for (var i = 0; i < x.length; i++) {
+                    option = $('<option value="' + x[i]["DIF_No"] + '">' + x[i]["DIF_Desc"] + '</option>');
+                    $("#Dif_Select").append(option);
+                }
+
+            }
+        });
+    }
+
+    function loadUsersTB()
+    {
+        $(".table").remove();
+        $("#editQuetsModal").addClass("d-none");
+        var table = $('<div class="table" data-table="users"><div class="row row_header"><input typt="text" style="background-color:white" class="form-control mb-5" placeholder="Search" id="filter_text" /></div><div class="row row_header"><div class="col">User Name</div><div class="col">Password</div><div class="col-2">Admin</div><div class="col-2">Delete</div></div></div>');
+        $("#wrapper").append(table);
+        $.ajax({
+            url: WebServiceURL + "/AdminGetUsers",
+            dataType: "json",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            error: function (a, b, c) {
+                console.log(c);
+            },
+            success: function (data) {
+                var output = "";
+                var x = JSON.parse(data.d);
+                for (var i = 0; i < x.length; i++) {
+                    output += '<div data-id=' + x[i]["userid"] + ' class="row mt-2 p-3">';
+                    //output += '<div class="col"><input type="text" field="firstname" class="form-control" value="' + x[i]["firstname"] + '"/></div>';
+                    //output += '<div class="col"><input type="text" field="lastname" class="form-control" value="' + x[i]["lastname"] + '"/></div>';
+                    output += '<div class="col"><input type="text" field="username" class="form-control searchEnable" value="' + x[i]["username"] + '"/></div>';
+                    output += '<div class="col"><input type="text" field="pass" class="form-control" value="' + x[i]["pass"] + '"/></div>';
+                    //output += '<div class="col"><input type="text" field="email" class="form-control" value="' + x[i]["email"] + '"/></div>';
+                    output += '<div class="col-2 rank_select"><input field="rank" type="checkbox" ' + (x[i]["rank"] == "1" ? "checked" : "") + '></div>';
+                    output += '<div class="col-2"><i class="fas fa-trash-alt"></i></div>';
+                    output += '</div>';
+                } 
+                $(".table").append(output);
+                $(".table").find(".fa-trash-alt").click(deleteUser);
+                $(".table").find(".mt-2 input").change(updateField);
+                $(".table").find("#filter_text").on("keyup", filterBoUsers);
+                $("#wrapper").addClass("container");
+
+            }
+        });
+    }
+
+    function ShowFloatMessage(msg, classname) {
+        $(".popup_cont").removeClass("d-none");
+        $(".popup_cont").text(msg);
+        $(".popup_cont").addClass(classname);
+        var showMsgTimer = function () {
+            $(".popup_cont").addClass("d-none");
+            $(".popup_cont").removeClass(classname);
+        }
+        window.setTimeout(showMsgTimer, 5000);
+    }
+
+
+</script>

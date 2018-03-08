@@ -1,0 +1,271 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" />
+    <title>Escape Reality</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/sandstone/bootstrap.min.css" rel="stylesheet" integrity="sha384-G3G7OsJCbOk1USkOY4RfeX1z27YaWrZ1YuaQ5tbuawed9IoreRDpWpTkZLXQfPm3" crossorigin="anonymous">
+    <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+   
+    <script src="js/jquery.touchSwipe.min.js"></script>
+    <script src="js/Globals.js"></script>
+<style>
+    body {
+        background-color: #536f6e;
+        font-family: Arial;
+    }
+    .header_logo {
+        position: absolute;
+        width: 35px;
+    }
+    .panel-body input
+    {
+        margin-top:12px;
+    }
+    .panel-title
+    {
+        display:inline-block;
+    }
+    .edit_btn {
+        display: inline;
+        padding: 4px;
+        float: right;
+        margin-top: -3px;
+    }
+
+    .disabled_field
+    {
+        background-color:transparent!important;
+        /*color:white;*/
+        cursor:none;
+        border:none;
+    }
+    .panel-heading {
+        background-color: #7b8a89 !important;
+        border-color: #7b8a89 !important;
+    }
+    .panel {
+        width: 85%;
+        margin: 0 auto;
+    }
+    .btn_cont {
+        text-align: center;
+        margin-top: 10px;
+    }
+    .btn {
+        width: 49%;
+        display: inline-block;
+    }
+
+    .hidden
+    {
+        display:none;
+    }
+
+    .success {
+        background-color: #00bc8c !important;
+        color: white;
+    }
+    .popup_cont {
+        width: 100%;
+        margin-top: 73px;
+        position: fixed;
+        background-color: rgba(99, 76, 0, 0.88);
+        /* box-shadow: black 0px 0px 5px; */
+        /* border-radius: 6px; */
+        padding: 5px 0px 8px 4px;
+        text-align: center;
+        font-weight: bold;
+        display: none;
+    }
+
+
+    .error {
+        color: white;
+        font-weight: bold;
+        background-color: rgba(206, 67, 67, 0.88);
+    }
+    .input_label {
+        vertical-align: sub;
+        font-size: smaller;
+        text-decoration: underline;
+        width: 100%;
+        margin-left: 17px;
+        font-weight:bold;
+        margin-top:10px;
+    }
+    #firstName {
+        color: rgba(255, 255, 255, 0.75);
+        margin-left: 60px;
+        margin-top: 28px;
+    }
+</style>
+</head>
+<body>
+    <div class="popup_cont"></div>
+    <!--NAV BAR-->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark"><label id="userName" style="color:white"></label>
+        <a class="navbar-brand" href="home.html">Escape Reality</a>
+        <button class="navbar-toggler" style="right:15px" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="home.html"><i class="fas fa-home"></i> Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="news.html"><i class="fas fa-newspaper"></i> News</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="friends.html"><i class="fas fa-users"></i> Friends</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="messages.html"><i class="fas fa-envelope"></i> Messages</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="myquests.html"><i class="fas fa-th-list"></i> My Quests</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="connect.html"><i class="fab fa-wpforms"></i> Connect Us</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="profile.html"><i class="fas fa-user"></i> My Profile <span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="panel">
+        <div class="panel-heading">
+            <h3 class="panel-title">My Profile</h3>
+            <a href="#" class="btn btn-default edit_btn">Edit</a>
+        </div>
+        <div class="panel-body">
+        <div class="btn_cont hidden">
+            <div class="btn btn-success" id="submit_btn">Submit</div>
+            <div class="btn btn-default" id="cancel_btn">Done</div>
+        </div>
+        </div>
+    </div>
+</body>
+</html>
+
+<script>
+   
+    $(document).ready(init);
+
+    function init() {
+        //isAdmin();
+        //$("#firstName").text(sessionStorage.getItem("UserName"));
+        $(".edit_btn").click(enableFields);
+        $("#submit_btn").click(updateFields);
+        $("#cancel_btn").click(cancelFields);
+        var post = {
+            username: sessionStorage.getItem("UserName")
+        };
+        $.ajax({
+            url: WebServiceURL + "/GetProfile",
+            dataType: "json",
+            type: "POST",
+            data: JSON.stringify(post),
+            contentType: "application/json; charset=utf-8",
+            error: function (a, b, c) {
+                console.log(c, "error");
+            },
+            success: function (data) {
+                var el = JSON.parse(data.d);
+                var output = "<div class='input_cont'><div class='input_label'>First Name:</div><input type='text' class='form-control disabled_field' disabled value='" + el[0]["firstname"] + "'/></div>"
+                output += "<div class='input_cont'><div class='input_label'>Last Name:</div><input type='text' class='form-control disabled_field' disabled value='" + el[0]["lastname"] + "'/></div>"
+                output += "<div class='input_cont'><div class='input_label'>Password:</div><input type='password' class='form-control disabled_field' disabled value='" + el[0]["pass"] + "'/></div>"
+                output += "<div class='input_cont'><div class='input_label'>Email:</div><input type='text' class='form-control disabled_field' disabled value='" + el[0]["email"] + "'/></div>"
+                $(".panel-body").prepend(output);
+            }
+        });
+    }
+
+
+    function cancelFields()
+    {
+        var post = {
+            username: sessionStorage.getItem("UserName")
+        };
+        $.ajax({
+            url: WebServiceURL + "/GetProfile",
+            dataType: "json",
+            type: "POST",
+            data: JSON.stringify(post),
+            contentType: "application/json; charset=utf-8",
+            error: function (a, b, c) {
+                console.log(c, "error");
+            },
+            success: function (data) {
+                var el = JSON.parse(data.d);
+                $(".form-control").eq(0).val(el[0]["firstname"]);
+                $(".form-control").eq(1).val(el[0]["lastname"]);
+                $(".form-control").eq(2).val(el[0]["pass"]);
+                $(".form-control").eq(3).val(el[0]["email"]);
+                $(".edit_btn").trigger('click');
+            }
+        });
+     }
+
+    function updateFields()
+    {
+        var post = {
+            userid: sessionStorage.getItem("UserID"),
+            firstname: $(".form-control")[0].value,
+            lastname: $(".form-control")[1].value,
+            email: $(".form-control")[3].value,
+            password: $(".form-control")[2].value
+        };
+
+        $.ajax({
+            url: WebServiceURL + "/Update_Profile",
+            dataType: "json",
+            type: "POST",
+            data: JSON.stringify(post),
+            contentType: "application/json; charset=utf-8",
+            error: function (a, b, c) {
+                console.log(c, "error");
+            },
+            success: function (data) {
+                ShowFloatMessage("Profile updated.", "success");
+            }
+        });
+    }
+
+    function enableFields()
+    {
+        $(this).toggleClass("d-none");
+        $(".btn_cont").toggleClass("hidden");
+        $(".form-control").toggleClass("disabled_field");
+        if ($(".form-control").hasClass("disabled_field")) {
+            $(".form-control").attr("disabled", "true");
+        }
+        else
+            $(".form-control").removeAttr("disabled");
+    }
+
+    function ShowFloatMessage(msg, classname) {
+        $(".popup_cont").css("display", "inline");
+        $(".popup_cont").text(msg);
+        $(".popup_cont").addClass(classname);
+        var showMsgTimer = function () {
+            $(".popup_cont").css("display", "none");
+            $(".popup_cont").removeClass(classname);
+        }
+        window.setTimeout(showMsgTimer, 5000);
+    }
+</script>
+
+
+

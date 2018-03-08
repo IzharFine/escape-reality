@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<widget xmlns     = "http://www.w3.org/ns/widgets"
+        xmlns:gap = "http://phonegap.com/ns/1.0"
+        id        = "com.phonegap.ER5"
+        version   = "1.0.0">
+
+  <name>EscapeReality</name>
+  <description>
+    BLA BLA
+  </description>
+
+  <author href="http://phonegap.com" email="moshe22cohen@Gmail.com">
+    moshe
+  </author>
+
+  <preference name="phonegap-version" value="cli-6.5.0"/>
+
+
+  <plugin name="cordova-plugin-camera" spec="~2.4.1" />
+  <plugin name="cordova-plugin-device-orientation" spec="1.0.7" />
+  <!--<plugin name="cordova-plugin-file-transfer" spec="1.7.0" />-->
+  <plugin name="cordova-plugin-splashscreen" spec="4.0.3" />
+  <plugin name="cordova-plugin-whitelist" spec="~1.3.3" />
+  <plugin name="cordova-plugin-inappbrowser" spec="~1.7.2" />
+  <plugin name="cordova-plugin-geolocation" spec="~3.0.0" />
+
+
+
+  <access origin="*"/>
+  <access origin="*://*.google.com/*" subdomains="true"/>
+  <access origin="*://*.googleapis.com/*" subdomains="true"/>
+  <allow-intent href="http://*/*"/>
+  <allow-intent href="https://*/*"/>
+  <allow-intent href="tel:*"/>
+  <allow-intent href="sms:*"/>
+  <allow-intent href="mailto:*"/>
+  <allow-intent href="geo:*"/>
+  <!-- Allow all unrecognized URLs to open installed apps
+     *NOT RECOMMENDED* -->
+  <allow-intent href="*" />
+  <platform name="android">
+    <allow-intent href="market:*"/>
+  </platform>
+  <platform name="ios">
+    <allow-intent href="itms:*"/>
+    <allow-intent href="itms-apps:*"/>
+  </platform>
+
+  <!--<icon src="./media/img/logo.png"  width="57" height="57" />-->
+  <!-- <gap:splash src="ruppinmobile.ac.il.preview26.livedns.co.il/site14/res/imgs/logo.png"  gap:platform="ios"  width="320" height="480" /> -->
+  <!-- <gap:splash src="ruppinmobile.ac.il.preview26.livedns.co.il/site14/res/imgs/logo.png"  gap:platform="android" gap:density="mdpi" /> -->
+  <!--width="470" height="320"-->
+</widget>

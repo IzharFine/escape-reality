@@ -1,0 +1,199 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" />
+    <title>Escape Reality</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous"></script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/sandstone/bootstrap.min.css" rel="stylesheet" integrity="sha384-G3G7OsJCbOk1USkOY4RfeX1z27YaWrZ1YuaQ5tbuawed9IoreRDpWpTkZLXQfPm3" crossorigin="anonymous">
+   <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="js/jquery.touchSwipe.min.js"></script>
+    <script src="js/Globals.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            background-color: #c0d6d5;
+            font-family: Arial;
+        }
+
+        .btn {
+            width: 40%;
+            display: inline-block;
+        }
+
+        .row {
+            text-align: center;
+        }
+
+        #forgatPass {
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .btn_cont {
+            width: 100%;
+        }
+
+        input.form-control {
+            margin-top: 8px;
+        }
+
+        .well {
+            width: 85%;
+            margin: 15px auto;
+        }
+
+        .img_container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .logo_img {
+            width: 80%;
+        }
+
+        .popup_cont {
+            width: 100%;
+            position: fixed;
+            background-color: rgba(206, 155, 67, 0.88);
+            /*box-shadow: black 0px 0px 5px;*/
+            /*border-radius: 6px;*/
+            padding: 5px 0px 8px 4px;
+        }
+
+        .popup_cont {
+            display: none;
+        }
+
+        .error {
+            color: white;
+            font-weight: bold;
+            background-color: rgba(206, 67, 67, 0.88);
+        }
+        /* CSS 3 BUTTON ANIM */
+        .hvr-shrink {
+            display: inline-block;
+            vertical-align: middle;
+            -webkit-transform: perspective(1px) translateZ(0);
+            transform: perspective(1px) translateZ(0);
+            box-shadow: 0 0 1px transparent;
+            -webkit-transition-duration: 0.3s;
+            transition-duration: 0.3s;
+            -webkit-transition-property: transform;
+            transition-property: transform;
+        }
+
+            .hvr-shrink:hover, .hvr-shrink:focus, .hvr-shrink:active {
+                -webkit-transform: scale(0.9);
+                transform: scale(0.9);
+            }
+
+        .container {
+            background-color: #9cb7b6;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="popup_cont"></div>
+    <div class="container mt-5 p-5">
+        <div class="row text-center">
+            <div class="col">
+                Escape Reality - Back Office
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col">
+                <input type="text" id="user_name" class="form-control" placeholder="User Name" />
+            </div>
+            <div class="col-2"></div>
+        </div>
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col">
+                    <input type="password" id="user_pass" class="form-control" placeholder="Password" />
+            </div>
+            <div class="col-2"></div>
+        </div>
+        <div class="row mt-3">
+            <div class="btn_cont">
+                <a id="btn_login" href="#" class="hvr-shrink btn btn-success">LOG IN</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label id="forgatPass">Forgat your password?</label>
+            </div>
+        </div>
+    </div>
+    
+    
+
+</body>
+</html>
+<script>
+
+
+    $(document).ready(init);
+
+    function init() {
+        $("#btn_login").click(login_site);
+    }
+
+    function login_site() {
+        var user =
+            {
+                username: $("#user_name").val(),
+                password: $("#user_pass").val(),
+            }
+        $.ajax({
+            url: WebServiceURL + "/Login",
+            dataType: "json",
+            type: "POST",
+            data: JSON.stringify(user),
+            contentType: "application/json; charset=utf-8",
+            error: function (a, b, c) {
+                ShowFloatMessage(c, "error");
+            },
+            success: function (data) {
+                if (data.d.length != 0) {
+                    var x = JSON.parse(data.d);
+
+                    sessionStorage.setItem("UserName", x[0]["username"]);
+                    sessionStorage.setItem("FirstName", x[0]["firstname"]);
+                    sessionStorage.setItem("UserID", x[0]["userid"]);
+                    sessionStorage.setItem("Rank", x[0]["rank"]);
+                    
+                    if (x[0]["rank"] != "0" && x[0]["rank"] != "")
+                        window.location.href = "backoffice.html";
+                    else
+                        ShowFloatMessage("אין לך הרשאות להכנס", "error");
+                }
+                else {
+                    ShowFloatMessage("Wrong User Name / Password.", "error");
+                }
+            }
+        });
+    }
+
+    function ShowFloatMessage(msg, classname) {
+        $(".popup_cont").css("display", "inline");
+        $(".popup_cont").text(msg);
+        $(".popup_cont").addClass(classname);
+        var showMsgTimer = function () {
+            $(".popup_cont").css("display", "none");
+            $(".popup_cont").removeClass(classname);
+        }
+        window.setTimeout(showMsgTimer, 5000);
+    }
+</script>

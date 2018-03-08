@@ -1,0 +1,576 @@
+﻿<!DOCTYPE html>
+<html >
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" />
+    <title>Escape Reality</title>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/sandstone/bootstrap.min.css" rel="stylesheet" integrity="sha384-G3G7OsJCbOk1USkOY4RfeX1z27YaWrZ1YuaQ5tbuawed9IoreRDpWpTkZLXQfPm3" crossorigin="anonymous">
+    <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="js/jquery.touchSwipe.min.js"></script>
+    <script src="js/Globals.js"></script>
+    <script src="js/home.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
+
+  
+
+    <style>
+        body {
+            background-color: #536f6e;
+            font-family: Arial;
+        }
+
+        #btn_start {
+            font-size: 55px;
+            width: 80%;
+            padding: 72px 0px;
+        }
+
+        .finished {
+            background-color: #ffff8c !important;
+            color: #3c3c3c!important;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .header_logo {
+            position: absolute;
+            width: 35px;
+        }
+
+        .title_cont {
+            text-align: center;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .quest_Hard {
+            background-color: #e43725 !important;
+            border-color: #e43725 !important;
+            color: white;
+        }
+
+        .quest_Easy {
+            background-color: #00bc8c !important;
+            border-color: #00bc8c !important;
+            color: white;
+        }
+
+        .quest_Med {
+            background-color: #c87f0a !important;
+            border-color: #be780a !important;
+            color: white;
+        }
+
+        .tablelvl_Hard {
+            border-bottom: 10px solid #e43725 !important;
+            /*background-color: #e43725 !important;
+            border-color: #e43725 !important;*/
+            /*max-height: 20px;
+            min-height: 20px;*/
+            color: black;
+        }
+
+        .tablelvl_Easy {
+            border-bottom: 10px solid #00bc8c !important;
+            /*background-color: #00bc8c !important;*/
+            /*border-color: #00bc8c !important;*/
+            /*max-height: 20px;
+            min-height: 20px;*/
+            color: black;
+        }
+
+        .tablelvl_Med {
+            border-bottom: 10px solid #be780a !important;
+            /*border-color: #be780a !important;*/
+            /*max-height: 20px;
+            min-height: 20px;*/
+            color: black;
+        }
+
+
+        .lvl_Hard {
+            background-color: #e43725 !important;
+            border-color: #e43725 !important;
+            /*max-height: 20px;
+            min-height: 20px;*/
+            color:white;
+        }
+
+        .lvl_Easy {
+            background-color: #00bc8c !important;
+            border-color: #00bc8c !important;
+            /*max-height: 20px;
+            min-height: 20px;*/
+            color: white;
+        }
+
+        .lvl_Med {
+            background-color: #c87f0a !important;
+            border-color: #be780a !important;
+            /*max-height: 20px;
+            min-height: 20px;*/
+            color: white;
+        }
+
+        .table_header {
+            background-color: #375a7f;
+            border-color: #375a7f;
+        }
+
+        .row:not(:first-child) {
+            border-radius: 3px;
+            background-color: #eef7ff;
+            -webkit-transition: background-color 1s;
+            -moz-transition: background-color 1s;
+            transition: background-color 1s;
+            cursor:pointer;
+        }
+
+        #quest_outputTTl{
+            font-size:20px;
+        }
+        
+        .row:not(:first-child):hover {
+            background-color: #9aafae;
+        }
+
+        .row:first-child{
+            font-weight:bold;
+        }
+
+        #submit_answer_btn {
+            font-size: 22px;
+            height: 62px;
+            font-weight:bold;
+        }
+        /*.my_row_header {
+            border-radius: 0px !important;
+            color: black !important;
+            text-decoration: underline;
+        }
+
+        .my_col {
+            display: table-cell;
+            width: 20%;
+        }
+
+        .my_row {
+            width: 100%;
+            padding: 0px 0px 26px 0px;
+            margin: 4px 0px 0px 0px;
+            cursor: pointer;
+            border-radius: 4px;
+            display: inline-table;
+            font-size: 15px;
+            color: white;
+        }*/
+
+
+
+        #quest_helper_modal .modal-header, #quest_output_modal .modal-header {
+            background-color: #606b6b;
+            color: black;
+            font-weight: 100;
+        } 
+        
+        #wrapper {
+            margin: 0 auto;
+            text-align: center;
+            width: 80%;
+            border-radius: 12px;
+        }
+
+        #filter_select{
+            border-radius:5px;
+            height:45px;
+        } 
+        
+        
+        .popup_cont {
+            width: 100%;
+            margin-top: 62px;
+            position: fixed;
+            background-color: rgba(99, 76, 0, 0.88);
+            border-radius: 6px;
+            padding: 5px 0px 8px 4px;
+            text-align: center;
+            font-weight: bold;
+            display: none;
+            z-index: 1;
+            box-shadow: rgba(0, 0, 0, 0.8509803921568627) 0px 5px 23px;
+        }
+
+        .popup_txt_field {
+            width: 85%;
+            margin: 0 auto;
+        }
+
+        .error {
+            color: white;
+            font-weight: bold;
+            background-color: rgba(206, 67, 67, 0.88);
+        }
+
+        .close_btn {
+            display: inline-block;
+            /* float: right; */
+            top: 0px;
+            right: 0px;
+            margin-right: 7px;
+            font-weight: bold;
+            position: absolute;
+            cursor: pointer;
+        }
+
+
+        #ShowQuestDetailsModalTtl {
+            font-size: 20px;
+            font-weight: bold;
+            font-family: arial;
+        }
+
+        #ShowHelperModalTtl{
+            font-size:20px;
+            color:black;
+            font-weight:100;
+        }
+        #quest_helper_output{
+            font-size:16px;
+        } 
+        
+        #firstName {
+            color: rgba(255, 255, 255, 0.75);
+            margin-left: 60px;
+            margin-top: 28px;
+        }
+
+        #startquest_btn {
+            background-color: #2da517;
+            box-shadow: black 0px 0px 2px;
+            margin-top: 6px;
+            font-size: 22px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .quest_btn {
+            width: 30%;
+            margin: 1px;
+        }
+
+        #map_quest_btn {
+            width: 95%;
+            font-size: 35px;
+            height: 80px;
+            font-weight:bold;
+            line-height: inherit;
+        }
+
+        #QuestDetailsText{
+            font-size:16px;
+        }
+
+       
+        
+        .map_btn_cont:first-child {
+            text-align: center;
+            margin: 30px auto;
+            width: 95%;
+        }
+
+        #btn_hint, #btn_info {
+            background-color: #343a40;
+            color: white;
+        }
+
+        #ShowQuestDetailsModalDiff {
+            width: 30px;
+            margin-left: 15px;
+            margin-right: 15px;
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+        } 
+        
+        #btn_report {
+            color: white;
+            background-color: #c5984b;
+        }
+
+        .ma-0{
+            margin:0 auto;
+        }
+
+
+        /* CSS3 ANIMATION*/
+        .hvr-bounce-out {
+            display: inline-block;
+            vertical-align: middle;
+            -webkit-transform: perspective(1px) translateZ(0);
+            transform: perspective(1px) translateZ(0);
+            box-shadow: 0 0 1px transparent;
+            -webkit-transition-duration: 0.5s;
+            transition-duration: 0.5s;
+        }
+
+            .hvr-bounce-out:hover, .hvr-bounce-out:focus, .hvr-bounce-out:active {
+                -webkit-transform: scale(0.8);
+                transform: scale(0.8);
+                -webkit-transition-timing-function: cubic-bezier(0.47, 2.02, 0.31, -0.36);
+                transition-timing-function: cubic-bezier(0.47, 2.02, 0.31, -0.36);
+            }
+
+        .hvr-shutter-in-horizontal {
+            display: inline-block;
+            vertical-align: middle;
+            -webkit-transform: perspective(1px) translateZ(0);
+            transform: perspective(1px) translateZ(0);
+            box-shadow: 0 0 1px transparent;
+            position: relative;
+            background: #2098D1;
+            -webkit-transition-property: color;
+            transition-property: color;
+            -webkit-transition-duration: 0.3s;
+            transition-duration: 0.3s;
+        }
+
+            .hvr-shutter-in-horizontal:before {
+                content: "";
+                position: absolute;
+                z-index: -1;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background: #3e3f3a;
+                -webkit-transform: scaleX(1);
+                transform: scaleX(1);
+                -webkit-transform-origin: 50%;
+                transform-origin: 50%;
+                -webkit-transition-property: transform;
+                transition-property: transform;
+                -webkit-transition-duration: 0.3s;
+                transition-duration: 0.3s;
+                -webkit-transition-timing-function: ease-out;
+                transition-timing-function: ease-out;
+            }
+
+            .hvr-shutter-in-horizontal:hover, .hvr-shutter-in-horizontal:focus, .hvr-shutter-in-horizontal:active {
+                color: white;
+            }
+
+                .hvr-shutter-in-horizontal:hover:before, .hvr-shutter-in-horizontal:focus:before, .hvr-shutter-in-horizontal:active:before {
+                    -webkit-transform: scaleX(0);
+                    transform: scaleX(0);
+                }
+
+        /* GOOGLE MAPS API CSS */
+        #map {
+            width: 95%;
+            height: 335px;
+            margin: 0 auto;
+            border: rgba(0, 0, 0, 0.5686274509803921) 1px solid;
+            margin-top: -22px !important;
+        }
+        /* Optional: Makes the sample page fill the window. */
+        html, body {
+            width: 100%
+        }
+
+        #map_cont {
+            margin-top: -22px;
+        }
+
+        #answer_input {
+           font-size: 30px;
+           padding:11px;
+            width: 100%;
+        }
+
+        #AnswerModal > div > div > div.modal-footer > .btn
+        {
+            width:48%;
+        }
+
+        /*.navbar-brand:before
+        {
+            content:'בדיקה';
+            color:red;
+        }*/
+        
+        
+        #answer_input::-webkit-input-placeholder {
+            font-size: 20px;
+            line-height: 3;
+            opacity:0.5;
+        }
+
+        .row-header{
+            color:white;
+        }
+
+    </style>
+</head>
+<body>
+    <!--NAV BAR-->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark"><label id="userName" style="color:white"></label>
+        <a class="navbar-brand" href="home.html">Escape Reality</a>
+        <button class="navbar-toggler" style="right:15px" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="home.html"><i class="fas fa-home"></i> Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="news.html"><i class="fas fa-newspaper"></i> News</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="friends.html"><i class="fas fa-users"></i> Friends</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="messages.html"><i class="fas fa-envelope"></i> Messages</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="myquests.html"><i class="fas fa-th-list"></i> My Quests</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="connect.html"><i class="fab fa-wpforms"></i> Connect Us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="profile.html"><i class="fas fa-user"></i> My Profile</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div id="wrapper">
+        <div id="filter_cont" class="row">
+            <div class="col-8">
+                <input typt="text" class="form-control" placeholder="Search" id="filter_text" />
+            </div>
+            <div class="col-4">
+                 <select id="filter_select" class="w-100">
+                     <option value="0">Difficulty</option>
+                 </select>
+            </div>
+        </div>
+        <div class="container mt-3 mb-3">
+            <div class="row">
+                <div class="col ma-0 w-50 lvl_Easy">Easy</div>
+                <div class="col ma-0 w-50 lvl_Med">Medium</div>
+                <div class="col ma-0 w-50 lvl_Hard">Hard</div>
+            </div>
+        </div>
+        <div class="my_table container hidden mt-1" style="overflow-y:scroll;max-height:438px">
+            <div class="row row-header">
+                <div class="col">Name</div>
+                <div class="col">Location</div>
+            </div>
+        </div>
+    </div>
+    <!--<div class="my_row" style="text-align:center">
+        <a href="#" id="btn_start" class="btn btn-success hvr-bounce-out d-none">START</a>
+    </div>-->
+ 
+    <div id="result">
+      
+
+    </div>
+    <!--<div id="map"></div>-->
+    <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB6yIgsJc-AR6KXn83JJcWEhuU23Zemeqk&libraries=geometry"></script>
+
+
+    <!-- Modals -->
+    <div class="modal fade" id="ShowQuestDetailsModal" tabindex="-1" role="dialog" aria-labelledby="ShowQuestDetailsModal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div id="ShowQuestDetailsModalDiff" style="min-width:20px;min-height:20px"></div><div class="modal-title" id="ShowQuestDetailsModalTtl"></div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center">
+                    <div id="QuestDetailsText"></div>
+                    <input type="button" class="btn w-75 mt-5" id="startquest_btn" data-dismiss="modal" value="GO"/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="AnswerModal" tabindex="-1" role="dialog" aria-labelledby="AnswerModal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <!--<h5 class="modal-title" id="exampleModalLabel">Modal title</h5>-->
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" value="0.00008" id="LatLongCheck" class="d-none"/>
+                    <input type="text" id="answer_input" placeholder="Answer" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary d-none" data-dismiss="modal">סגור</button>
+                    <button type="button" class="btn btn-success w-100" id="submit_answer_btn">CHECK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="quest_helper_modal" tabindex="-1" role="dialog" aria-labelledby="quest_helper_modal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title" id="ShowHelperModalTtl"></div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="quest_helper_output"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary d-none" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="quest_output_modal" tabindex="-1" role="dialog" aria-labelledby="quest_output_modal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title" id="quest_outputTTl"></div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="quest_output"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary d-none" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
+

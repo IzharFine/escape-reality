@@ -1,0 +1,135 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" />
+
+    <title>Escape Reality</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/sandstone/bootstrap.min.css" rel="stylesheet" integrity="sha384-G3G7OsJCbOk1USkOY4RfeX1z27YaWrZ1YuaQ5tbuawed9IoreRDpWpTkZLXQfPm3" crossorigin="anonymous">
+    <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="js/jquery.touchSwipe.min.js"></script>
+    <script src="js/Globals.js"></script>
+<style>
+    body {
+        background-color: #536f6e;
+        font-family: Arial;
+    }
+
+    .panel-body {
+        background-color: #f1f1f1;
+    }
+
+
+    .bot_title {
+        width: 100%;
+        display: inline-block;
+        color: white;
+        /* font-weight: bold; */
+        font-family: Arial;
+    }
+    .top_title {
+        text-decoration: underline;
+        font-family: Arial;
+        font-weight: bold;
+        color: white;
+        font-size: 17px;
+    }
+    .panel-default {
+        width: 85%;
+        margin: 0 auto;
+        margin-top: 20px;
+        box-shadow: rgba(0, 0, 0, 0.62) 0px 0px 18px;
+    }
+    .header_logo
+    {
+        position:absolute;
+        width:35px;
+    }
+    .panel-heading {
+        background-color: #343a40 !important;
+    }
+    #firstName {
+        color: rgba(255, 255, 255, 0.75);
+        margin-left: 60px;
+        margin-top: 28px;
+    }
+</style>
+</head>
+<body>
+    <!--NAV BAR-->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-1"><label id="userName" style="color:white"></label>
+        <a class="navbar-brand" href="home.html">Escape Reality</a>
+        <button class="navbar-toggler" style="right:15px" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="home.html"><i class="fas fa-home"></i> Home</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="news.html"><i class="fas fa-newspaper"></i> News <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="friends.html"><i class="fas fa-users"></i> Friends</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="messages.html"><i class="fas fa-envelope"></i> Messages</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="myquests.html"><i class="fas fa-th-list"></i> My Quests</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="connect.html"><i class="fab fa-wpforms"></i> Connect Us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="profile.html"><i class="fas fa-user"></i> My Profile</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div id="wrapper" class="mt-2" style="overflow-y:scroll;max-height:525px;"></div>
+</body>
+</html>
+
+<script>
+    
+    $(document).ready(init);
+
+    function init()
+    {
+        //$("#firstName").text(sessionStorage.getItem("UserName"));
+        //isAdmin();
+        $.ajax({
+            url: WebServiceURL + "/GetNews",
+            dataType: "json",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            error: function (a, b, c) {
+                console.log(c);
+            },
+            success: function (data) {
+                var output = "";
+                var x = JSON.parse(data.d);
+                for (var i = 0; i < x.length; i++)
+                {
+                    output += '<div class="panel panel-default"><div class="panel-heading">';
+                    output += '<h3 class="panel-title"><div class="top_title"> ' + x[i]["topic"] + '</div><div class="bot_title">' + x[i]["creator"] + ' - ' + x[i]["create_date_display"] + '</div></h3></div><div class="panel-body">';
+                    output += x[i]["contect"] + '</div></div>';
+                }
+                $("#wrapper").append(output);
+            }
+        });
+    }
+
+</script>

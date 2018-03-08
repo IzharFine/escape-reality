@@ -1,0 +1,379 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8" />
+    <title>Escape Reality</title>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/sandstone/bootstrap.min.css" rel="stylesheet" integrity="sha384-G3G7OsJCbOk1USkOY4RfeX1z27YaWrZ1YuaQ5tbuawed9IoreRDpWpTkZLXQfPm3" crossorigin="anonymous">
+    <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="js/jquery.touchSwipe.min.js"></script>
+    <script src="js/Globals.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
+
+
+
+    <style>
+        body {
+            background-color: #536f6e;
+            font-family: Arial;
+        }
+
+        .ma-0 {
+            margin: 0 auto;
+        }
+
+        #btn_start {
+            font-size: 55px;
+            width: 80%;
+            padding: 72px 0px;
+        }
+
+        .finished {
+            background-color: #ffff8c !important;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .header_logo {
+            position: absolute;
+            width: 35px;
+        }
+
+        .title_cont {
+            text-align: center;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .lvl_Hard {
+            background-color: #e43725 !important;
+            border-color: #e43725 !important;
+            max-height: 20px;
+            min-height: 20px;
+            color: white;
+        }
+
+        .lvl_Easy {
+            background-color: #00bc8c !important;
+            border-color: #00bc8c !important;
+            max-height: 20px;
+            min-height: 20px;
+            color: white;
+        }
+
+        .lvl_Med {
+            background-color: #c87f0a !important;
+            border-color: #be780a !important;
+            max-height: 20px;
+            min-height: 20px;
+            color: white;
+        }
+
+        .table_header {
+            background-color: #375a7f;
+            border-color: #375a7f;
+        }
+
+        .row {
+            /*border-radius: 3px;*/
+            background-color: #eef7ff;
+            -webkit-transition: background-color 1s;
+            -moz-transition: background-color 1s;
+            transition: background-color 1s;
+            cursor: pointer;
+        }
+
+        a{
+            color:black;
+        }
+
+            .row:first-child {
+                font-size: 16px;
+                font-weight: bold;
+            }
+
+            /*.row:not(:first-child):hover {
+                background-color: #9aafae;
+            }*/
+
+        /*.row:first-child {
+            font-weight: bold;
+        }*/
+
+        /*.my_row_header {
+            border-radius: 0px !important;
+            color: black !important;
+            text-decoration: underline;
+        }
+
+        .my_col {
+            display: table-cell;
+            width: 20%;
+        }
+
+        .my_row {
+            width: 100%;
+            padding: 0px 0px 26px 0px;
+            margin: 4px 0px 0px 0px;
+            cursor: pointer;
+            border-radius: 4px;
+            display: inline-table;
+            font-size: 15px;
+            color: white;
+        }*/
+
+
+        #wrapper {
+            margin: 0 auto;
+            text-align: center;
+            width: 80%;
+            border-radius: 12px;
+        }
+
+        .row:last-child{
+            text-decoration:underline;
+        }
+
+        /*.popup_cont {
+            width: 100%;
+            margin-top: 62px;
+            position: fixed;
+            background-color: rgba(99, 76, 0, 0.88);
+            border-radius: 6px;
+            padding: 5px 0px 8px 4px;
+            text-align: center;
+            font-weight: bold;
+            display: none;
+            z-index: 1;
+            box-shadow: rgba(0, 0, 0, 0.8509803921568627) 0px 5px 23px;
+        }*/
+
+        .popup_txt_field {
+            width: 85%;
+            margin: 0 auto;
+        }
+
+        .error {
+            color: white;
+            font-weight: bold;
+            background-color: rgba(206, 67, 67, 0.88);
+        }
+
+        .close_btn {
+            display: inline-block;
+            /* float: right; */
+            top: 0px;
+            right: 0px;
+            margin-right: 7px;
+            font-weight: bold;
+            position: absolute;
+            cursor: pointer;
+        }
+
+
+        #ShowQuestDetailsModalTtl {
+            font-size: 20px;
+            font-weight: bold;
+            font-family: arial;
+        }
+
+        #ShowHelperModalTtl {
+            font-size: 20px;
+        }
+
+        #quest_helper_output {
+            font-size: 16px;
+        }
+
+        #firstName {
+            color: rgba(255, 255, 255, 0.75);
+            margin-left: 60px;
+            margin-top: 28px;
+        }
+
+        #startquest_btn {
+            background-color: #2da517;
+            box-shadow: black 0px 0px 2px;
+            margin-top: 6px;
+            font-size: 22px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .quest_btn {
+            width: 30%;
+            margin: 1px;
+        }
+
+        #map_quest_btn {
+            width: 95%;
+            font-size: 35px;
+            height: 80px;
+            line-height: inherit;
+        }
+
+        #QuestDetailsText {
+            font-size: 16px;
+        }
+
+        .map_btn_cont:first-child {
+            text-align: center;
+            margin: 30px auto;
+            width: 95%;
+        }
+
+        #btn_hint, #btn_info {
+            background-color: #636363;
+            color: white;
+        }
+
+        #ShowQuestDetailsModalDiff {
+            width: 30px;
+            margin-left: 15px;
+            margin-right: 15px;
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+        }
+
+        #btn_report {
+            color: white;
+            background-color: #c5984b;
+        }
+
+        /* CSS3 ANIMATION*/
+        .hvr-bounce-out {
+            display: inline-block;
+            vertical-align: middle;
+            -webkit-transform: perspective(1px) translateZ(0);
+            transform: perspective(1px) translateZ(0);
+            box-shadow: 0 0 1px transparent;
+            -webkit-transition-duration: 0.5s;
+            transition-duration: 0.5s;
+        }
+
+            .hvr-bounce-out:hover, .hvr-bounce-out:focus, .hvr-bounce-out:active {
+                -webkit-transform: scale(0.8);
+                transform: scale(0.8);
+                -webkit-transition-timing-function: cubic-bezier(0.47, 2.02, 0.31, -0.36);
+                transition-timing-function: cubic-bezier(0.47, 2.02, 0.31, -0.36);
+            }
+
+        .hvr-shutter-in-horizontal {
+            display: inline-block;
+            vertical-align: middle;
+            -webkit-transform: perspective(1px) translateZ(0);
+            transform: perspective(1px) translateZ(0);
+            box-shadow: 0 0 1px transparent;
+            position: relative;
+            background: #2098D1;
+            -webkit-transition-property: color;
+            transition-property: color;
+            -webkit-transition-duration: 0.3s;
+            transition-duration: 0.3s;
+        }
+
+            .hvr-shutter-in-horizontal:before {
+                content: "";
+                position: absolute;
+                z-index: -1;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background: #3e3f3a;
+                -webkit-transform: scaleX(1);
+                transform: scaleX(1);
+                -webkit-transform-origin: 50%;
+                transform-origin: 50%;
+                -webkit-transition-property: transform;
+                transition-property: transform;
+                -webkit-transition-duration: 0.3s;
+                transition-duration: 0.3s;
+                -webkit-transition-timing-function: ease-out;
+                transition-timing-function: ease-out;
+            }
+
+            .hvr-shutter-in-horizontal:hover, .hvr-shutter-in-horizontal:focus, .hvr-shutter-in-horizontal:active {
+                color: white;
+            }
+
+                .hvr-shutter-in-horizontal:hover:before, .hvr-shutter-in-horizontal:focus:before, .hvr-shutter-in-horizontal:active:before {
+                    -webkit-transform: scaleX(0);
+                    transform: scaleX(0);
+                }
+
+        /* GOOGLE MAPS API CSS */
+    </style>
+</head>
+<body>
+    <!--NAV BAR-->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark"><label id="userName" style="color:white"></label>
+        <a class="navbar-brand" href="home.html">Escape Reality</a>
+        <button class="navbar-toggler" style="right:15px" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="home.html"><i class="fas fa-home"></i> Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="news.html"><i class="fas fa-newspaper"></i> News</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="friends.html"><i class="fas fa-users"></i> Friends</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="messages.html"><i class="fas fa-envelope"></i> Messages</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="myquests.html"><i class="fas fa-th-list"></i> My Quests</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="connect.html"><i class="fab fa-wpforms"></i> Connect Us <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="profile.html"><i class="fas fa-user"></i> My Profile</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row ma-0 p-4">
+            Ways to reach us:
+        </div>
+        <div class="row ma-0 p-4">
+            <div class="col-2"><a href="http://www.facebook.com/" target="_blank"><img src="media/img/fb-icon.png" class="w-100" /></a></div>
+            <div class="col text-center"><a href="http://www.facebook.com/" target="_blank">Escape-Reality OFFICIAL</a></div>
+        </div>
+        <div class="row ma-0 p-4">
+            <div class="col-2"><a href="mailto:EscapeReality@gmail.com"><img src="media/img/gmail-icon.png" class="w-100" /></a></div>
+            <div class="col text-center"><a href="mailto:EscapeReality@gmail.com">EscapeReality@gmail.com</a></div>
+        </div>
+        <div class="row ma-0 p-4">
+            <div class="col-2"><a href="tel:+97252-6575740"><img src="media/img/phone-icon.png" class="w-100" /></a></div>
+            <div class="col text-center"><a href="tel:+97252-6575740">+972 52-6575740</a></div>
+        </div>
+        <div class="row ma-0 p-4 text-center">
+            <div class="col">
+                Active days: Sunday-Thursday 08:30-17:00
+            </div>
+        </div>
+    </div>
+
+
+</body>
+</html>
